@@ -16,6 +16,28 @@ abstract class Area extends ArrayList<Line>
   }
 
   abstract protected void role(Point p);
+
+  boolean isInside(Point p)
+  {
+    boolean oddNodes=false;
+    int j = size()-1;
+    int i;
+
+    for (i=0; i<size(); i++)
+    {
+      float iy = get(i).p1.y;
+      float ix = get(i).p1.x;
+      float jy = get(j).p1.y;
+      float jx = get(j).p1.x;
+      if ((iy < p.y && jy >= p.y || jy< p.y && iy>=p.y) && (ix <= p.x || jx <= p.x)) {
+        if (ix + (p.y - iy) / (jy - iy) * (jx - ix) < p.x) {
+          oddNodes=!oddNodes;
+        }
+      }
+      j=i;
+    }
+    return oddNodes;
+  }
 }
 
 class Point
@@ -59,7 +81,7 @@ class Line
       return 0;
     }
     float m = a/b;
-    new Fun(m, -1, p1.y-(m*p1.x));
+    f = new Fun(m, -1, p1.y-(m*p1.x));
     return(m);
   }
 

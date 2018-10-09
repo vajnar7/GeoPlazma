@@ -9,6 +9,7 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.Random;
 
+@SuppressWarnings("InfiniteLoopStatement")
 @SuppressLint("ViewConstructor")
 public class WhereAmI extends GPS
 {
@@ -56,13 +57,26 @@ public class WhereAmI extends GPS
                       (float)V.get(i+1).x, (float)V.get(i+1).y, paint);
     }
 
-    Area area = areas.get("iza1");
-    for (int i=0; i<area.size(); i++)
+    for (Area a: areas.values())
     {
-      Line l = area.get(i);
+      if (a.isInside(currentPosition)) {
+        _drawArea(a, canvas);
+      }
+    }
+    //_drawArea(areas.get("iza1"), canvas);
+    //_drawArea(areas.get("iza2"), canvas);
+    //_drawArea(areas.get("iza3"), canvas);
+    canvas.drawCircle(currentPosition.x, currentPosition.y, 3, paint);
+  }
+
+  private void _drawArea(Area are, Canvas canvas)
+  {
+    for (int i=0; i<are.size(); i++)
+    {
+      Line l = are.get(i);
       canvas.drawLine(l.p1.x, l.p1.y, l.p2.x, l.p2.y, paint);
     }
-    area.role(currentPosition);
+    are.role(currentPosition);
   }
 
   class Function_v extends F
