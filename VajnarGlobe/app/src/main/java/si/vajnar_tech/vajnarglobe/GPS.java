@@ -21,7 +21,7 @@ import java.util.Random;
 public abstract class GPS extends View implements LocationListener
 {
   private static final String TAG              = "IZAA";
-  private static final double DEF_LONGITUDE    = 10.0;
+  private static final double DEF_LONGITUDE    = 300.0;
   private static final double DEF_LATITUDE     = 10.0;
   private static final int    MINIMUM_TIME     = 10000;// 10s
   private static final int    MINIMUM_DISTANCE = 30;   // 50m
@@ -45,10 +45,24 @@ public abstract class GPS extends View implements LocationListener
     currentTime = 0;
     enableGPSService();
 
-    area1();
+    _area1();
+    _area2();
   }
 
-  private void area1()
+  private void _area2()
+  {
+    ArrayList<Point> a = new ArrayList<>();
+    a.add(new Point(300, 10));
+    a.add(new Point(550, 45));
+    a.add(new Point(600, 250));
+    a.add(new Point(300, 300));
+    areas.put("iza2", new AreaBase(a));
+
+    if (test)
+      ccc(a);
+  }
+
+  private void _area1()
   {
     ArrayList<Point> a = new ArrayList<>();
     a.add(new Point(10, 10));
@@ -167,7 +181,9 @@ class AreaBase extends Area
       else {
         // |ax0 + by0 + c| / sqr(a^2 + b^2)
         d = Math.abs(l.f.a * p.x + l.f.b * p.y + l.f.c);
-        double k = Math.sqrt(l.f.a * l.f.a + l.f.b * l.f.a);
+        double k = Math.sqrt(l.f.a * l.f.a + l.f.b * l.f.b);
+        Log.i("IZAA", "...d=" + d);
+        Log.i("IZAA", "...k=" + k);
         d /= k;
       }
       Log.i("IZAA", "d(f(x), x0)=" + d);
