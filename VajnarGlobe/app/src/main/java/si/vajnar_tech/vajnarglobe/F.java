@@ -1,8 +1,5 @@
 package si.vajnar_tech.vajnarglobe;
 
-import android.util.Log;
-import android.util.SparseArray;
-
 import java.util.ArrayList;
 
 abstract class F
@@ -11,7 +8,7 @@ abstract class F
 
   abstract Vector f(int t);
   abstract ArrayList<Vector> f();
-  abstract Vector integral(int t1, int t2);
+  abstract Vector integral();
 
   F()
   {

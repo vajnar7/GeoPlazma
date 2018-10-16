@@ -17,8 +17,8 @@ public class WhereAmI extends GPS
   Function_v fv = new Function_v();
   Function_v fs = new Function_v();
   D ds = new D();
-  D dv = new D();
   D dt = new D();
+  D dv;
 
   Point currentPosition;
 
@@ -31,11 +31,14 @@ public class WhereAmI extends GPS
   @Override
   protected void notifyMe(Vector point, int t)
   {
-    fs.add(t, point);
+    dv = new D();
+    fs.add(t, point); // := f(t)
     ds._up(point);
     dt._up(t);
     dv._is(ds._po(dt));
-    currentPosition = point._is();
+    fv.add(t, dv);
+    currentPosition = point.toPoint();
+    
     ctx.runOnUiThread(new Runnable() {
       @Override public void run()
       {
@@ -66,7 +69,8 @@ public class WhereAmI extends GPS
     //_drawArea(areas.get("iza1"), canvas);
     //_drawArea(areas.get("iza2"), canvas);
     //_drawArea(areas.get("iza3"), canvas);
-    canvas.drawCircle(currentPosition.x, currentPosition.y, 3, paint);
+    //currentPosition.draw(canvas, paint);
+    //canvas.drawCircle(currentPosition.x, currentPosition.y, 3, paint);
   }
 
   private void _drawArea(Area are, Canvas canvas)
@@ -74,9 +78,37 @@ public class WhereAmI extends GPS
     for (int i=0; i<are.size(); i++)
     {
       Line l = are.get(i);
-      canvas.drawLine(l.p1.x, l.p1.y, l.p2.x, l.p2.y, paint);
+      l.draw(canvas, paint);
+      //canvas.drawLine(l.p1.x, l.p1.y, l.p2.x, l.p2.y, paint);
     }
-    are.role(currentPosition);
+    ArrayList<Point> closestPoints = are.role(currentPosition);
+    Log.i("IZAA", "***************************************************");
+    int i = 0;
+    for (Point p: closestPoints) {
+      if (i == 1) {
+        Point startPoint = fs.getAt(0).toPoint();
+        startPoint.draw(canvas, paint);
+        currentPosition.draw(canvas, paint);
+        Line soda_linija = new Line(startPoint, currentPosition);
+        Line cavk_linija = are.get(i);
+        soda_linija.draw(canvas, paint);
+        Point havdre = soda_linija.intersection(cavk_linija);
+        if (havdre != null)
+          havdre.draw(canvas, paint);
+        else
+          continue;
+        Vector ttt = new Vector(havdre.x, havdre.y);
+        Vector ccc = new Vector(currentPosition.x, currentPosition.y);
+        Vector qqq = ttt._minus(ccc);
+        Log.i("IZAA", "vektor razdalje do=" + qqq);
+        Vector sume = fv.integral();
+        Vector time = new Vector(Math.abs(qqq.x/sume.x), Math.abs(qqq.y/sume.y));
+        Log.i("IZAA", "vektor casa=" + time);
+        Log.i("IZAA", "do vzhodne meje bos prisel cez " + (time.x + time.y) + " sekund");
+      }
+      i ++;
+      canvas.drawLine(currentPosition.x, currentPosition.y, p.x, p.y, paint);
+    }
   }
 
   class Function_v extends F
@@ -92,25 +124,34 @@ public class WhereAmI extends GPS
       return (get());
     }
 
-    @Override Vector integral(int t1, int t2)
+    @Override Vector integral()
     {
-      return null;
+      Vector res = new Vector();
+      for (Vector v: values) {
+        res._plus_je(v);
+      }
+      Vector k = new Vector(size(), size());
+      res._deljeno_je(k);
+      return res;
     }
   }
 
   private void startTestGPSService()
   {
     final int min = 5;
-    final int max = 23;
+    final int max = 25;
+    final int minT = 5;
+    final int maxT = 10;
     new Thread(new Runnable() {
       @Override public void run()
       {
         Random r = new Random();
         while (true) {
-          int t = r.nextInt(max - min) + min;
+          int t = r.nextInt(maxT - minT) + minT;
           currentTime += t;
           notifyMe(new Vector(longitude, latitude), currentTime);
           longitude += r.nextInt(max - min) + min;
+          longitude += 10;
           latitude += r.nextInt(max - min) + min;
           try {
             Thread.sleep(t * 1000);

@@ -14,15 +14,12 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
 
 public abstract class GPS extends View implements LocationListener
 {
   private static final String TAG              = "IZAA";
-  private static final double DEF_LONGITUDE    = 290.0;
-  private static final double DEF_LATITUDE     = 15.0;
+  private static final double DEF_LONGITUDE    = 122;  //x
+  private static final double DEF_LATITUDE     = 36;  //y
   private static final int    MINIMUM_TIME     = 10000;// 10s
   private static final int    MINIMUM_DISTANCE = 30;   // 50m
   public  String       area;
@@ -178,30 +175,47 @@ public abstract class GPS extends View implements LocationListener
 
 class AreaBase extends Area
 {
-
   AreaBase(ArrayList<Point> points)
   {
     super(points);
   }
 
   @Override
-  protected void role(Point p)
+  protected ArrayList<Point> role(Point p)
   {
-    Log.i("IZAA", "===============================================================");
+    ArrayList<Point> closestsPoints = new ArrayList<>();
+    //Log.i("IZAA", "===============================================================");
     for (Line l : this)
     {
       double d;
 
       if (l.f.isHorizontal != null) {
         d = l.f.isHorizontal ? (double) Math.abs(l.p1.y - p.y) : (double) Math.abs(l.p1.x - p.x);
+        closestsPoints.add(_getClosestPoint(l, p, l.f.isHorizontal));
       }
       else {
         // |ax0 + by0 + c| / sqr(a^2 + b^2)
         d = Math.abs(l.f.a * p.x + l.f.b * p.y + l.f.c);
         double k = Math.sqrt(l.f.a * l.f.a + l.f.b * l.f.b);
         d /= k;
+        closestsPoints.add(_getClosestPoint(l, p, null));
       }
-      Log.i("IZAA", "d(f(x), x0)=" + d);
+      //Log.i("IZAA", "d(f(x), x0)=" + d);
     }
+    return closestsPoints;
+  }
+
+  private Point _getClosestPoint(Line l, Point p, Boolean isHorizontal)
+  {
+    if (isHorizontal != null)
+      return isHorizontal ? new Point (p.x, l.p1.y): new Point(l.p1.x, p.y);
+    double a, b, c;
+    a = l.f.a;
+    b = l.f.b;
+    c = l.f.c;
+    double k = (l.f.a * l.f.a + l.f.b * l.f.b); //a^2 + b^2
+    double qx = b*(b*p.x - a*p.y) - a*c;
+    double qy = a*(-b*p.x + a*p.y) - b*c;
+    return new Point((float)(qx/k), (float)(qy/k));
   }
 }

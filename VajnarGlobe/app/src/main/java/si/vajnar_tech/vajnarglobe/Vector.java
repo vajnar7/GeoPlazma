@@ -20,7 +20,7 @@ public class Vector
     this.y = y;
   }
 
-  Point _is()
+  Point toPoint()
   {
     return new Point((float)x, (float)y);
   }
@@ -28,6 +28,18 @@ public class Vector
   Vector _minus(Vector v)
   {
     return new Vector(x - v.x, y - v.y);
+  }
+
+  void _plus_je(Vector v)
+  {
+    x += v.x;
+    y += v.y;
+  }
+
+  void _deljeno_je(Vector v)
+  {
+    x /= v.x;
+    y /= v.y;
   }
 
   Vector _po(D dt)

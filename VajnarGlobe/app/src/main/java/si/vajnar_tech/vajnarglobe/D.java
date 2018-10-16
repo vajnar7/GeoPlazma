@@ -18,8 +18,6 @@ class D extends Vector
   {
     s = scalar - q_s;
     q_s = scalar;
-    //Log.i("IZAA", "Bunkatibunka nocinpadan " + s);
-    //Log.i("IZAA", "Bunkatibunka nocinpadan " + q_s);
   }
 
   D _up(Vector v)
