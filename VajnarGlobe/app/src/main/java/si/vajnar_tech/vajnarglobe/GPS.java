@@ -27,7 +27,7 @@ public abstract class GPS extends View implements LocationListener
   protected double       longitude;
   protected int       currentTime;
   protected MainActivity ctx;
-  private boolean        gotLocation = false;
+  public boolean gotLocation = false;
 
   HashMap<String, Area> areas = new HashMap<>();
   static boolean test = false;
@@ -95,25 +95,28 @@ public abstract class GPS extends View implements LocationListener
 
   private void enableGPSService()
   {
-
     LocationManager locationManager = (LocationManager) ctx.getSystemService(
         Context.LOCATION_SERVICE);
 
     if (locationManager == null) {
       Log.d(TAG, "Cannot get the LocationManager");
     } else {
-      Log.d(TAG, "The LocationManager succesfuly granted");
+      Log.d(TAG, "The LocationManager successfully granted");
     }
 
     // We have to check if ACCESS_FINE_LOCATION and/or ACCESS_COARSE_LOCATION permission are granted
-    if (ContextCompat.checkSelfPermission(ctx,
-                                          android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
-        || ContextCompat.checkSelfPermission(ctx,
-                                             android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-
+    if (ContextCompat.checkSelfPermission(
+        ctx,
+        android.Manifest.permission.ACCESS_FINE_LOCATION) ==
+        PackageManager.PERMISSION_GRANTED ||
+        ContextCompat.checkSelfPermission(
+            ctx,
+            android.Manifest.permission.ACCESS_COARSE_LOCATION) ==
+        PackageManager.PERMISSION_GRANTED) {
       assert locationManager != null;
-      locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MINIMUM_TIME,
-                                             MINIMUM_DISTANCE, this);
+      locationManager.requestLocationUpdates(
+          LocationManager.GPS_PROVIDER, MINIMUM_TIME,
+          MINIMUM_DISTANCE, this);
     }
   }
 
@@ -129,48 +132,17 @@ public abstract class GPS extends View implements LocationListener
 
   @Override
   public void onStatusChanged(String s, int i, Bundle bundle)
-  { }
+  {}
 
   @Override
   public void onProviderEnabled(String s)
-  {
-
-  }
+  {}
 
   @Override
   public void onProviderDisabled(String s)
-  {
-
-  }
+  {}
 
   protected abstract void notifyMe(Vector point, int timestamp);
-
-  public double getLatitude()
-  {
-    return latitude;
-  }
-
-  public double getLongitude()
-  {
-    return longitude;
-  }
-
-  public boolean isGotLocation()
-  {
-    return gotLocation;
-  }
-
-  class GeoPoint
-  {
-    Double lon;
-    Double lat;
-
-    GeoPoint(double lon, double lat)
-    {
-      this.lon = lon;
-      this.lat = lat;
-    }
-  }
 }
 
 class AreaBase extends Area
@@ -184,7 +156,6 @@ class AreaBase extends Area
   protected ArrayList<Point> role(Point p)
   {
     ArrayList<Point> closestsPoints = new ArrayList<>();
-    //Log.i("IZAA", "===============================================================");
     for (Line l : this)
     {
       double d;
