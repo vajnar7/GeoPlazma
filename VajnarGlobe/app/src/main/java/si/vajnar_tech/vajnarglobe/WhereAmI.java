@@ -13,11 +13,11 @@ import java.util.Random;
 @SuppressLint("ViewConstructor")
 public class WhereAmI extends GPS
 {
-  Paint paint=new Paint();
-  Function_v fv = new Function_v();
-  Function_v fs = new Function_v();
-  D ds = new D();
-  D dt = new D();
+  Paint      paint = new Paint();
+  Function_v fv    = new Function_v();
+  Function_v fs    = new Function_v();
+  D          ds    = new D();
+  D          dt    = new D();
   D dv;
 
   Point currentPosition;
@@ -38,8 +38,9 @@ public class WhereAmI extends GPS
     dv._is(ds._po(dt));
     fv.add(t, dv);
     currentPosition = point.toPoint();
-    
-    ctx.runOnUiThread(new Runnable() {
+
+    ctx.runOnUiThread(new Runnable()
+    {
       @Override public void run()
       {
         invalidate();
@@ -54,59 +55,44 @@ public class WhereAmI extends GPS
 
     paint.setColor(Color.parseColor("#CD5C5C"));
     ArrayList<Vector> V = fs.f();
-    for (int i = 0; i < V.size() - 1; i++)
-    {
-      canvas.drawLine((float)V.get(i).x, (float)V.get(i).y,
-                      (float)V.get(i+1).x, (float)V.get(i+1).y, paint);
+    for (int i = 0; i < V.size() - 1; i++) {
+      canvas.drawLine((float) V.get(i).x, (float) V.get(i).y,
+                      (float) V.get(i + 1).x, (float) V.get(i + 1).y, paint);
     }
 
-    for (Area a: areas.values())
-    {
+    for (Area a : areas.values()) {
       if (a.isInside(currentPosition)) {
         _drawArea(a, canvas);
       }
     }
-    //_drawArea(areas.get("iza1"), canvas);
-    //_drawArea(areas.get("iza2"), canvas);
-    //_drawArea(areas.get("iza3"), canvas);
-    //currentPosition.draw(canvas, paint);
-    //canvas.drawCircle(currentPosition.x, currentPosition.y, 3, paint);
   }
 
   private void _drawArea(Area are, Canvas canvas)
   {
-    for (int i=0; i<are.size(); i++)
-    {
-      Line l = are.get(i);
-      l.draw(canvas, paint);
-      //canvas.drawLine(l.p1.x, l.p1.y, l.p2.x, l.p2.y, paint);
-    }
-    ArrayList<Point> closestPoints = are.role(currentPosition);
-    Log.i("IZAA", "***************************************************");
+    are.draw(canvas, paint);
+    ArrayList<Point> closestPoints = are.process(currentPosition);
     int i = 0;
-    for (Point p: closestPoints) {
-      if (i == 1) {
-        Point startPoint = fs.getAt(0).toPoint();
-        startPoint.draw(canvas, paint);
-        currentPosition.draw(canvas, paint);
-        Line soda_linija = new Line(startPoint, currentPosition);
-        Line cavk_linija = are.get(i);
-        soda_linija.draw(canvas, paint);
-        Point havdre = soda_linija.intersection(cavk_linija);
-        if (havdre != null)
-          havdre.draw(canvas, paint);
-        else
-          continue;
-        Vector ttt = new Vector(havdre.x, havdre.y);
-        Vector ccc = new Vector(currentPosition.x, currentPosition.y);
-        Vector qqq = ttt._minus(ccc);
-        Log.i("IZAA", "vektor razdalje do=" + qqq);
-        Vector sume = fv.integral();
-        Vector time = new Vector(Math.abs(qqq.x/sume.x), Math.abs(qqq.y/sume.y));
-        Log.i("IZAA", "vektor casa=" + time);
-        Log.i("IZAA", "do vzhodne meje bos prisel cez " + (time.x + time.y) + " sekund");
-      }
-      i ++;
+    for (Point p : closestPoints) {
+      p.draw(canvas, paint);
+      Point startPoint = fs.getAt(0).toPoint();
+      startPoint.draw(canvas, paint);
+      currentPosition.draw(canvas, paint);
+      Line approx = new Line(startPoint, currentPosition);
+      approx.draw(canvas, paint);
+      Point predictor = approx.intersection(are.get(i));
+      if (predictor != null)
+        predictor.draw(canvas, paint);
+      else
+        continue;
+      Vector ttt = new Vector(predictor.x, predictor.y);
+      Vector ccc = new Vector(currentPosition.x, currentPosition.y);
+      Vector qqq = ttt._minus(ccc);
+      //Log.i("IZAA", "vektor razdalje do=" + qqq);
+      Vector sume = fv.integral();
+      Vector time = new Vector(Math.abs(qqq.x / sume.x), Math.abs(qqq.y / sume.y));
+      //Log.i("IZAA", "vektor casa=" + time);
+      Log.i("IZAA", String.format("do meje %d bos prisel cez ", i) + (time.x + time.y) + " sekund");
+      i++;
       canvas.drawLine(currentPosition.x, currentPosition.y, p.x, p.y, paint);
     }
   }
@@ -127,7 +113,7 @@ public class WhereAmI extends GPS
     @Override Vector integral()
     {
       Vector res = new Vector();
-      for (Vector v: values) {
+      for (Vector v : values) {
         res._plus_je(v);
       }
       Vector k = new Vector(size(), size());
@@ -138,11 +124,12 @@ public class WhereAmI extends GPS
 
   private void startTestGPSService()
   {
-    final int min = 5;
-    final int max = 25;
+    final int min  = 5;
+    final int max  = 25;
     final int minT = 5;
     final int maxT = 10;
-    new Thread(new Runnable() {
+    new Thread(new Runnable()
+    {
       @Override public void run()
       {
         Random r = new Random();

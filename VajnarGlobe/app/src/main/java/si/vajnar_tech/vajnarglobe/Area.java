@@ -10,35 +10,45 @@ abstract class Area extends ArrayList<Line>
 {
   Area(ArrayList<Point> points)
   {
-    for (int i=0; i<points.size()-1; i++)
-    {
-      add(new Line(points.get(i), points.get(i+1)));
-    }
-    add(new Line(points.get(points.size()-1), points.get(0)));
+    for (int i = 0; i < points.size() - 1; i++)
+      add(new Line(points.get(i), points.get(i + 1)));
+    add(new Line(points.get(points.size() - 1), points.get(0)));
   }
 
-  abstract protected ArrayList<Point> role(Point p);
+  abstract protected ArrayList<Point> process(Point p);
+  abstract public void draw(Canvas canvas, Paint paint);
 
-  boolean isInside(Point p)
+  protected boolean isInside(Point p)
   {
-    boolean oddNodes=false;
-    int j = size()-1;
-    int i;
+    boolean oddNodes = false;
+    int     j        = size() - 1;
+    int     i;
 
-    for (i=0; i<size(); i++)
-    {
+    for (i = 0; i < size(); i++) {
       float iy = get(i).p1.y;
       float ix = get(i).p1.x;
       float jy = get(j).p1.y;
       float jx = get(j).p1.x;
-      if ((iy < p.y && jy >= p.y || jy< p.y && iy>=p.y) && (ix <= p.x || jx <= p.x)) {
-        if (ix + (p.y - iy) / (jy - iy) * (jx - ix) < p.x) {
-          oddNodes=!oddNodes;
-        }
-      }
-      j=i;
+      if ((iy < p.y && jy >= p.y || jy < p.y && iy >= p.y) && (ix <= p.x || jx <= p.x))
+        if (ix + (p.y - iy) / (jy - iy) * (jx - ix) < p.x)
+          oddNodes = !oddNodes;
+      j = i;
     }
     return oddNodes;
+  }
+
+  protected Point _getClosestPoint(Line l, Point p, Boolean isHorizontal)
+  {
+    if (isHorizontal != null)
+      return isHorizontal ? new Point (p.x, l.p1.y): new Point(l.p1.x, p.y);
+    double a, b, c;
+    a = l.f.a;
+    b = l.f.b;
+    c = l.f.c;
+    double k = (l.f.a * l.f.a + l.f.b * l.f.b); //a^2 + b^2
+    double qx = b*(b*p.x - a*p.y) - a*c;
+    double qy = a*(-b*p.x + a*p.y) - b*c;
+    return new Point((float)(qx/k), (float)(qy/k));
   }
 }
 
@@ -55,7 +65,7 @@ class Point
   @Override
   public String toString()
   {
-    return("P(" + x + "," + y + ")");
+    return ("P(" + x + "," + y + ")");
   }
 
   void draw(Canvas canvas, Paint paint)
@@ -85,19 +95,17 @@ class Line
     float s = l2.f.c - f.c;
 
     // linija je vertikalna ali horizontalna
-    if (l2.f.isHorizontal != null)
-    {
+    if (l2.f.isHorizontal != null) {
       // second line is vertical
-      if (!l2.f.isHorizontal)
-      {
-        float yyy = f.a*l2.p1.x + f.c;
+      if (!l2.f.isHorizontal) {
+        float yyy = f.a * l2.p1.x + f.c;
         return new Point(l2.p1.x, yyy);
       }
     }
-    //if (k == 0 || s == 0)
-    //return null;
-    float x = s/k;
-    float y = f.a*x + f.c;
+    if (k == 0 || s == 0)
+      return null;
+    float x = s / k;
+    float y = f.a * x + f.c;
     return new Point(x, y);
   }
 
@@ -108,18 +116,16 @@ class Line
     if (a == 0 && b != 0) {
       f = new Fun(true);
       return 0;
-    }
-    else if (a != 0 && b == 0) {
+    } else if (a != 0 && b == 0) {
       f = new Fun(false);
       return 0;
-    }
-    else if (a == 0) {
+    } else if (a == 0) {
       Log.i("IZAA", "NaN");
       return 0;
     }
-    float m = a/b;
-    f = new Fun(m, -1, p1.y-(m*p1.x));
-    return(m);
+    float m = a / b;
+    f = new Fun(m, -1, p1.y - (m * p1.x));
+    return (m);
   }
 
   float f(float x)
@@ -133,11 +139,12 @@ class Line
     float a, b, c;
     Boolean isHorizontal;
 
-    Fun (boolean isH)
+    Fun(boolean isH)
     {
       isHorizontal = isH;
       a = b = c = 0;
     }
+
     Fun(float a, float b, float c)
     {
       isHorizontal = null;
@@ -155,6 +162,6 @@ class Line
   @Override
   public String toString()
   {
-    return("[" + p1 + "," + p2 + "]");
+    return ("[" + p1 + "," + p2 + "]");
   }
 }

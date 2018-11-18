@@ -55,7 +55,7 @@ public abstract class GPS extends View implements LocationListener
     a.add(new Point(5, 510));
     a.add(new Point(35, 470));
     a.add(new Point(7, 380));
-    areas.put("iza3", new AreaBase(a));
+    areas.put("iza3", new Place(a));
 
     if (test)
       ccc(a);
@@ -68,7 +68,7 @@ public abstract class GPS extends View implements LocationListener
     a.add(new Point(550, 45));
     a.add(new Point(600, 250));
     a.add(new Point(300, 300));
-    areas.put("iza2", new AreaBase(a));
+    areas.put("iza2", new Place(a));
 
     if (test)
       ccc(a);
@@ -81,7 +81,7 @@ public abstract class GPS extends View implements LocationListener
     a.add(new Point(300, 10));
     a.add(new Point(300, 300));
     a.add(new Point(10, 300));
-    areas.put("iza1", new AreaBase(a));
+    areas.put("iza1", new Place(a));
 
     if (test)
       ccc(a);
@@ -143,50 +143,4 @@ public abstract class GPS extends View implements LocationListener
   {}
 
   protected abstract void notifyMe(Vector point, int timestamp);
-}
-
-class AreaBase extends Area
-{
-  AreaBase(ArrayList<Point> points)
-  {
-    super(points);
-  }
-
-  @Override
-  protected ArrayList<Point> role(Point p)
-  {
-    ArrayList<Point> closestsPoints = new ArrayList<>();
-    for (Line l : this)
-    {
-      double d;
-
-      if (l.f.isHorizontal != null) {
-        d = l.f.isHorizontal ? (double) Math.abs(l.p1.y - p.y) : (double) Math.abs(l.p1.x - p.x);
-        closestsPoints.add(_getClosestPoint(l, p, l.f.isHorizontal));
-      }
-      else {
-        // |ax0 + by0 + c| / sqr(a^2 + b^2)
-        d = Math.abs(l.f.a * p.x + l.f.b * p.y + l.f.c);
-        double k = Math.sqrt(l.f.a * l.f.a + l.f.b * l.f.b);
-        d /= k;
-        closestsPoints.add(_getClosestPoint(l, p, null));
-      }
-      //Log.i("IZAA", "d(f(x), x0)=" + d);
-    }
-    return closestsPoints;
-  }
-
-  private Point _getClosestPoint(Line l, Point p, Boolean isHorizontal)
-  {
-    if (isHorizontal != null)
-      return isHorizontal ? new Point (p.x, l.p1.y): new Point(l.p1.x, p.y);
-    double a, b, c;
-    a = l.f.a;
-    b = l.f.b;
-    c = l.f.c;
-    double k = (l.f.a * l.f.a + l.f.b * l.f.b); //a^2 + b^2
-    double qx = b*(b*p.x - a*p.y) - a*c;
-    double qy = a*(-b*p.x + a*p.y) - b*c;
-    return new Point((float)(qx/k), (float)(qy/k));
-  }
 }
