@@ -13,6 +13,7 @@ import java.util.Random;
 @SuppressLint("ViewConstructor")
 public class WhereAmI extends GPS
 {
+  MainActivity act;
   Paint      paint = new Paint();
   Function_v fv    = new Function_v();
   Function_v fs    = new Function_v();
@@ -25,7 +26,7 @@ public class WhereAmI extends GPS
   WhereAmI(MainActivity ctx)
   {
     super(ctx);
-    startTestGPSService();
+    act = ctx;
   }
 
   @Override
@@ -60,7 +61,7 @@ public class WhereAmI extends GPS
                       (float) V.get(i + 1).x, (float) V.get(i + 1).y, paint);
     }
 
-    for (Area a : areas.values()) {
+    for (Area a : act.areas.values()) {
       if (a.isInside(currentPosition)) {
         _drawArea(a, canvas);
       }
@@ -120,34 +121,6 @@ public class WhereAmI extends GPS
       res._deljeno_je(k);
       return res;
     }
-  }
-
-  private void startTestGPSService()
-  {
-    final int min  = 5;
-    final int max  = 25;
-    final int minT = 5;
-    final int maxT = 10;
-    new Thread(new Runnable()
-    {
-      @Override public void run()
-      {
-        Random r = new Random();
-        while (true) {
-          int t = r.nextInt(maxT - minT) + minT;
-          currentTime += t;
-          notifyMe(new Vector(longitude, latitude), currentTime);
-          longitude += r.nextInt(max - min) + min;
-          longitude += 10;
-          latitude += r.nextInt(max - min) + min;
-          try {
-            Thread.sleep(t * 1000);
-          } catch (InterruptedException e) {
-            e.printStackTrace();
-          }
-        }
-      }
-    }).start();
   }
 }
 
