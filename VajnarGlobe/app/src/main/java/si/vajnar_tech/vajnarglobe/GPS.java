@@ -21,7 +21,7 @@ public abstract class GPS extends View implements LocationListener
   private static final double DEF_LONGITUDE    = 122;  //x
   private static final double DEF_LATITUDE     = 36;  //y
   private static final int    MINIMUM_TIME     = 10000;// 10s
-  private static final int    MINIMUM_DISTANCE = 30;   // 50m
+  private static final int    MINIMUM_DISTANCE = 30;   // 30m
   public  String       area;
   protected double       latitude;
   protected double       longitude;
