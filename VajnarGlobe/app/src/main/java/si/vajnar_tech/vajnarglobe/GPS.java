@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 public abstract class GPS extends View implements LocationListener
 {
@@ -67,7 +66,6 @@ public abstract class GPS extends View implements LocationListener
     latitude = location.getLatitude();
     longitude = location.getLongitude();
     gotLocation = true;
-    Toast.makeText(ctx, "GPS UPDATED", Toast.LENGTH_SHORT).show();
     notifyMe(new Vector(longitude, latitude), currentTime);
   }
 
