@@ -21,8 +21,8 @@ public class Login extends AsyncTask<String, Void, Integer>
 {
   // ce dostopamo od zunaj
   // public static final String SERVER_ADDRESS = "http://89.142.196.96:8000/";
-  private static final String SERVER_ADDRESS = "http://192.168.1.4:8000/";
-  public static final  String AREAS          = SERVER_ADDRESS + "rest/geopoint/%s";
+  private static final String SERVER_ADDRESS = "http://192.168.1.7:8000/";
+  static final         String AREAS          = SERVER_ADDRESS + "rest/geopoint/%s";
   private static final String WATCHDOG_USR   = "vajnar";
   private static final String WATCHDOG_PWD   = "AldebaraN7";
 

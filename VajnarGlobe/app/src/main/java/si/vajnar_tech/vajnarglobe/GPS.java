@@ -26,13 +26,14 @@ public abstract class GPS extends View implements LocationListener
   protected MainActivity ctx;
   public boolean gotLocation = false;
 
-  GPS(MainActivity ctx)
+  GPS(MainActivity ctx, String areaName)
   {
     super(ctx);
     this.ctx = ctx;
     latitude = DEF_LATITUDE;
     longitude = DEF_LONGITUDE;
     currentTime = 0;
+    area = areaName;
     enableGPSService();
   }
 

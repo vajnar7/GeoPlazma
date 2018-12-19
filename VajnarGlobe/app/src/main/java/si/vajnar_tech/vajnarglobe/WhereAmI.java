@@ -23,9 +23,9 @@ public class WhereAmI extends GPS
 
   Point currentPosition;
 
-  WhereAmI(MainActivity ctx)
+  WhereAmI(MainActivity ctx, String areaName)
   {
-    super(ctx);
+    super(ctx, areaName);
     act = ctx;
   }
 

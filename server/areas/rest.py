@@ -1,34 +1,38 @@
-from django.core.exceptions import ObjectDoesNotExist
-from rest_framework import serializers
-from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from areas.models import Area, GeoPoint
 
 
+class ObtainAreas(APIView):
+    permission_classes = (AllowAny,)
+
+    def get(self, request, f=None):
+        return Response({a.pk: a.name for a in Area.objects.all()})
+
+
 class UpdateGeoPoint(APIView):
     permission_classes = (AllowAny,)
 
-    def _get_area(self, name):
+    @staticmethod
+    def _get_area(name):
         try:
             return Area.objects.get(name=name)
-        except ObjectDoesNotExist:
+        except:
             return Area.objects.create(name=name)
 
-    def _clear_all(self, area):
+    @staticmethod
+    def _clear_all(area):
         qs = GeoPoint.objects.filter(area=area)
         for p in qs:
             p.delete()
 
-    def get(self, request, format=None, area_name=None):
+    def get(self, request, f=None, area_name=None):
         area = self._get_area(area_name)
-        # self._clear_all(area)
-        # return Response({'cleared': True})
-        res = {g.id: [g.lon, g.lat] for g in GeoPoint.objects.filter(area=area)}
-        return Response(res)
+        return Response({g.id: [g.lon, g.lat] for g in GeoPoint.objects.filter(area=area)})
 
-    def post(self, request, format=None, area_name=None):
+    def post(self, request, f=None, area_name=None):
         lon = request.data.get("lon", 0)
         lat = request.data.get("lat", 0)
         area = self._get_area(area_name)
@@ -39,8 +43,3 @@ class UpdateGeoPoint(APIView):
         GeoPoint.objects.create(area=area, lon=lon, lat=lat)
         return Response(dict(err_code="OK"))
 
-
-class GeoPointSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = GeoPoint
-        fields = ('lon', 'lat')

@@ -20,23 +20,22 @@ import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 
-@SuppressWarnings({"FieldCanBeLocal", "WeakerAccess"})
 public abstract class REST<T> extends AsyncTask<String, Void, T>
 {
-  private static final String TAG                = "REST";
-  static final         int    OUTPUT_TYPE_JSON   = 0;
-  private static final int    OUTPUT_TYPE_STRING = 1;
-  private static final int    OUTPUT_TYPE_STREAM = 2;
+  private static final String TAG = "IZAA-REST";
+
+  static final         int OUTPUT_TYPE_JSON   = 0;
+  private static final int OUTPUT_TYPE_STRING = 1;
+  private static final int OUTPUT_TYPE_STREAM = 2;
 
   private String url;
-  private String token        = "";
-  private final Class<T> resultClass;
-  private int       responseCode    = 0;
-  public  Exception serverException = null;
-  private Gson   gson;
+  private String token = "";
 
-  @SuppressWarnings("unchecked")
-  REST(String url)
+  private final Class<T> resultClass;
+
+  private Gson gson;
+
+  @SuppressWarnings("unchecked") REST(String url)
   {
     super();
     resultClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
@@ -59,6 +58,7 @@ public abstract class REST<T> extends AsyncTask<String, Void, T>
     return null;
   }
 
+  @SuppressWarnings("ResultOfMethodCallIgnored")
   private void writeToInputStream(InputStream in, OutputStream out)
   {
     byte[] buffer = new byte[4096];
@@ -66,7 +66,6 @@ public abstract class REST<T> extends AsyncTask<String, Void, T>
 
     try {
       File fname = new File(Environment.getExternalStorageDirectory().getPath() + "/text.json");
-      //noinspection ResultOfMethodCallIgnored
       fname.createNewFile();
       FileOutputStream test = new FileOutputStream(fname);
 
@@ -80,8 +79,7 @@ public abstract class REST<T> extends AsyncTask<String, Void, T>
     }
   }
 
-  @SuppressWarnings("SynchronizationOnLocalVariableOrMethodParameter") T
-  callServer(Object params, int objectType)
+  T callServer(Object params, int objectType)
   {
     try {
       URL               url  = new URL(this.url);
@@ -92,33 +90,31 @@ public abstract class REST<T> extends AsyncTask<String, Void, T>
       conn.setReadTimeout(readTimeout);
       conn.setDoOutput(true);
 
-      Log.i("REST", "KABIKAV=" + token);
+      Log.i(TAG, "TOKEN=" + token);
       conn.setRequestProperty("Authorization", "Token " + token);
       conn.setRequestProperty("Content-Type", "application/json");
       conn.setRequestProperty("Content-Encoding", "utf-8");
 
       if (params != null) {
         OutputStream os = conn.getOutputStream();
-        synchronized (params) {
-          switch (objectType) {
-          case OUTPUT_TYPE_JSON:    // object to serialize
-            os.write(gson.toJson(params).getBytes());
-            break;
-          case OUTPUT_TYPE_STRING:  // plain string
-            os.write(((String) params).getBytes());
-            break;
-          case OUTPUT_TYPE_STREAM:  // stream
-            InputStream is = (InputStream) params;
-            writeToInputStream(is, os);
-            is.close();
-            break;
-          }
+        switch (objectType) {
+        case OUTPUT_TYPE_JSON:    // object to serialize
+          os.write(gson.toJson(params).getBytes());
+          break;
+        case OUTPUT_TYPE_STRING:  // plain string
+          os.write(((String) params).getBytes());
+          break;
+        case OUTPUT_TYPE_STREAM:  // stream
+          InputStream is = (InputStream) params;
+          writeToInputStream(is, os);
+          is.close();
+          break;
         }
         os.close();
       }
       conn.connect();
-      T result = null;
-      responseCode = conn.getResponseCode();
+      T   result       = null;
+      int responseCode = conn.getResponseCode();
       if (responseCode == HttpURLConnection.HTTP_OK) {
         if (resultClass != Void.class) {
           BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()), 512);
@@ -142,13 +138,10 @@ public abstract class REST<T> extends AsyncTask<String, Void, T>
       }
       return result;
     } catch (SocketTimeoutException e) {
-      serverException = e;
       Log.w(TAG, "Timeout connecting to " + url);
     } catch (ConnectException e) {
-      serverException = e;
       Log.w(TAG, e.getMessage());
     } catch (IOException e) {
-      serverException = e;
       e.printStackTrace();
     }
     return null;
