@@ -9,18 +9,22 @@ class ObtainAreas(APIView):
     permission_classes = (AllowAny,)
 
     @staticmethod
-    def get(request, f=None):
+    def put(request, f=None):
         res = []
         for a in Area.objects.all():
             res.append({a.name: {'lon': p.lon, 'lat': p.lat} for p in GeoPoint.objects.filter(area=a)})
         return Response(dict(areas=res))
 
     @staticmethod
-    def put(request, f=None):
+    def get(request, f=None):
         res = []
+        # for a in Area.objects.all():
+        #     res.append({a.name: {'lon': p.lon, 'lat': p.lat} for p in GeoPoint.objects.filter(area=a)})
         for a in Area.objects.all():
-            res.append({a.name: {'lon': p.lon, 'lat': p.lat} for p in GeoPoint.objects.filter(area=a)})
-        return Response(dict(areas=res))
+            res.append({'name': a.name, 'points':
+                ([{'lon': p.lon, 'lat': p.lat}
+                  for p in GeoPoint.objects.filter(area=a)])})
+        return Response(res)
 
 
 class UpdateGeoPoint(APIView):
