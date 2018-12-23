@@ -8,8 +8,19 @@ from areas.models import Area, GeoPoint
 class ObtainAreas(APIView):
     permission_classes = (AllowAny,)
 
-    def get(self, request, f=None):
-        return Response({a.pk: a.name for a in Area.objects.all()})
+    @staticmethod
+    def get(request, f=None):
+        res = []
+        for a in Area.objects.all():
+            res.append({a.name: {'lon': p.lon, 'lat': p.lat} for p in GeoPoint.objects.filter(area=a)})
+        return Response(dict(areas=res))
+
+    @staticmethod
+    def put(request, f=None):
+        res = []
+        for a in Area.objects.all():
+            res.append({a.name: {'lon': p.lon, 'lat': p.lat} for p in GeoPoint.objects.filter(area=a)})
+        return Response(dict(areas=res))
 
 
 class UpdateGeoPoint(APIView):
