@@ -44,8 +44,7 @@ public class AreaTest
   @Before
   public void setUp()
   {
-    act = getActivityInstance();
-    _area1();_area2();_area3();
+    act = _getActivityInstance();
     signal = new CountDownLatch(1);
   }
 
@@ -53,57 +52,54 @@ public class AreaTest
   public void test1() throws InterruptedException
   {
     signal.await(5, TimeUnit.SECONDS);
-    startTestGPSService();
-    signal.await(5000, TimeUnit.SECONDS);
+    _startTestGPSService();
+    signal.await(5, TimeUnit.SECONDS);
   }
 
   @Test
-  public void testObtainArea()
+  public void getAllAreas() throws InterruptedException
   {
-    ArrayList<Point> a = new ArrayList<>();
-    a.add(new Point(10, 300));
-    a.add(new Point(300, 300));
-    a.add(new Point(520, 610));
-    a.add(new Point(5, 510));
-    a.add(new Point(35, 470));
-    a.add(new Point(7, 380));
-    act.sendLocation(a);
+    signal.await(5, TimeUnit.SECONDS);
+    new GetAreas();
+    signal.await(5, TimeUnit.SECONDS);
   }
 
-  // TODO: areas naj se nafilajo ob startu preko REST
-  private void _area3()
+  @Test
+  public void testStartWithArea1()
   {
-    ArrayList<Point> a = new ArrayList<>();
-    a.add(new Point(10, 300));
-    a.add(new Point(300, 300));
-    a.add(new Point(520, 610));
-    a.add(new Point(5, 510));
-    a.add(new Point(35, 470));
-    a.add(new Point(7, 380));
-    act.areas.put("iza3", new Place(a));
+    CurrentArea a = new CurrentArea("Iza1");
+    a.mark(new GeoPoint(10, 10));
+    a.mark(new GeoPoint(300, 10));
+    a.mark(new GeoPoint(300, 300));
+    a.mark(new GeoPoint(10, 300));
+    a.constructArea();
   }
 
-  private void _area2()
+  @Test
+  public void testAddArea2()
   {
-    ArrayList<Point> a = new ArrayList<>();
-    a.add(new Point(300, 10));
-    a.add(new Point(550, 45));
-    a.add(new Point(600, 250));
-    a.add(new Point(300, 300));
-    act.areas.put("iza2", new Place(a));
+    ArrayList<GeoPoint> a = new ArrayList<>();
+    a.add(new GeoPoint(300, 10));
+    a.add(new GeoPoint(550, 45));
+    a.add(new GeoPoint(600, 250));
+    a.add(new GeoPoint(300, 300));
+    new Place("Iza2", a).constructArea();
   }
 
-  private void _area1()
+  @Test
+  public void testAddArea3()
   {
-    ArrayList<Point> a = new ArrayList<>();
-    a.add(new Point(10, 10));
-    a.add(new Point(300, 10));
-    a.add(new Point(300, 300));
-    a.add(new Point(10, 300));
-    act.areas.put("iza1", new Place(a));
+    ArrayList<GeoPoint> a = new ArrayList<>();
+    a.add(new GeoPoint(10, 300));
+    a.add(new GeoPoint(300, 300));
+    a.add(new GeoPoint(520, 610));
+    a.add(new GeoPoint(5, 510));
+    a.add(new GeoPoint(35, 470));
+    a.add(new GeoPoint(7, 380));
+    new Place("Iza3", a).constructArea();
   }
 
-  private static MainActivity getActivityInstance()
+  private MainActivity _getActivityInstance()
   {
     final MainActivity[] currentActivity = new MainActivity[1];
     getInstrumentation().runOnMainSync(new Runnable()
@@ -119,7 +115,7 @@ public class AreaTest
     return currentActivity[0];
   }
 
-  private void startTestGPSService()
+  private void _startTestGPSService()
   {
     // test parameters
     final int min  = 5;
