@@ -76,6 +76,17 @@ public class AreaTest
   }
 
   @Test
+  public void testAddArea1()
+  {
+    ArrayList<GeoPoint> a = new ArrayList<>();
+    a.add(new GeoPoint(10, 10));
+    a.add(new GeoPoint(300, 10));
+    a.add(new GeoPoint(300, 300));
+    a.add(new GeoPoint(10, 300));
+    new Place("Iza1", a).constructArea();
+  }
+
+  @Test
   public void testAddArea2()
   {
     ArrayList<GeoPoint> a = new ArrayList<>();
@@ -98,6 +109,8 @@ public class AreaTest
     a.add(new GeoPoint(7, 380));
     new Place("Iza3", a).constructArea();
   }
+
+  //**********************************
 
   private MainActivity _getActivityInstance()
   {
