@@ -29,23 +29,23 @@ public class Place extends Area
   @Override
   protected ArrayList<Point> process(Point p)
   {
-    ArrayList<Point> closestsPoints = new ArrayList<>();
+    ArrayList<Point> closestPoints = new ArrayList<>();
     for (Line l : this) {
       double d;
 
       if (l.f.isHorizontal != null) {
         d = l.f.isHorizontal ? (double) Math.abs(l.p1.y - p.y) : (double) Math.abs(l.p1.x - p.x);
-        closestsPoints.add(getClosestPoint(l, p, l.f.isHorizontal));
+        closestPoints.add(getClosestPoint(l, p, l.f.isHorizontal));
       } else {
         // |ax0 + by0 + c| / sqr(a^2 + b^2)
         d = Math.abs(l.f.a * p.x + l.f.b * p.y + l.f.c);
         double k = Math.sqrt(l.f.a * l.f.a + l.f.b * l.f.b);
         d /= k;
-        closestsPoints.add(getClosestPoint(l, p, null));
-      }
+        closestPoints.add(getClosestPoint(l, p, null));
+    }
       Log.i("IZAA", "d(f(x), x0)=" + d);
     }
-    return closestsPoints;
+    return closestPoints;
   }
 
   @Override
