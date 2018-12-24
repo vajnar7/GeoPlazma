@@ -6,10 +6,12 @@ public class SendLocation extends REST<LocationObj>
 {
   private Double latitude;
   private Double longitude;
+  private Integer timestamp;
 
-  SendLocation(MainActivity ctx, Double longitude, Double latitude)
+  SendLocation(String areaName, Integer timestamp, Double longitude, Double latitude)
   {
-    super(String.format(AREAS, ctx.gpsService.area));
+    super(String.format(AREAS, areaName));
+    this.timestamp = timestamp;
     this.longitude = longitude;
     this.latitude = latitude;
   }
@@ -17,7 +19,7 @@ public class SendLocation extends REST<LocationObj>
   @Override
   public LocationObj backgroundFunc()
   {
-    return callServer(new LocationData(String.valueOf(longitude), String.valueOf(latitude)), OUTPUT_TYPE_JSON);
+    return callServer(new LocationData(timestamp, String.valueOf(longitude), String.valueOf(latitude)), OUTPUT_TYPE_JSON);
   }
 
   @Override
@@ -30,11 +32,13 @@ public class SendLocation extends REST<LocationObj>
 @SuppressWarnings("WeakerAccess")
 class LocationData
 {
+  Integer timestamp;
   String lon;
   String lat;
 
-  LocationData(String longitude, String latitude)
+  LocationData(Integer timestamp, String longitude, String latitude)
   {
+    this.timestamp = timestamp;
     this.lon = longitude;
     this.lat = latitude;
   }

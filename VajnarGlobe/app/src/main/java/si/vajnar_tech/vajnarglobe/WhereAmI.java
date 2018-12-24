@@ -23,9 +23,9 @@ public class WhereAmI extends GPS
 
   Point currentPosition;
 
-  WhereAmI(MainActivity ctx, String areaName)
+  WhereAmI(MainActivity ctx)
   {
-    super(ctx, areaName);
+    super(ctx);
     act = ctx;
   }
 
@@ -61,7 +61,8 @@ public class WhereAmI extends GPS
                       (float) V.get(i + 1).x, (float) V.get(i + 1).y, paint);
     }
 
-    for (Area a : act.areas.values()) {
+    for (Area a : C.areas.values()) {
+      _drawArea(a, canvas);
       if (a.isInside(currentPosition)) {
         _drawArea(a, canvas);
       }

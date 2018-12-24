@@ -4,15 +4,50 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 abstract class Area extends ArrayList<Line>
 {
-  Area(ArrayList<Point> points)
+  private String areaName;
+  ArrayList<GeoPoint> pointSet = new ArrayList<>();
+
+  Area(String name)
   {
+    areaName = name;
+  }
+
+  Area constructArea()
+  {
+    _sortPoints();
+
+    ArrayList<Point> points = new ArrayList<>();
+    for (GeoPoint p: pointSet)
+      points.add(new Point(p.lon, p.lat));
     for (int i = 0; i < points.size() - 1; i++)
       add(new Line(points.get(i), points.get(i + 1)));
     add(new Line(points.get(points.size() - 1), points.get(0)));
+    return this;
   }
+
+  private void _sortPoints()
+  {
+    Collections.sort(pointSet, new Comparator<GeoPoint>()
+    {
+      @Override
+      public int compare(GeoPoint o1, GeoPoint o2)
+      {
+        return o1.timestamp - o2.timestamp;
+      }
+    });
+  }
+
+  public String getName()
+  {
+    return areaName;
+  }
+
+  abstract protected Area mark(GeoPoint a);
 
   abstract protected ArrayList<Point> process(Point p);
 
@@ -50,4 +85,6 @@ abstract class Area extends ArrayList<Line>
     double qy = a * (-b * p.x + a * p.y) - b * c;
     return new Point((float) (qx / k), (float) (qy / k));
   }
+
+  protected abstract Area save();
 }

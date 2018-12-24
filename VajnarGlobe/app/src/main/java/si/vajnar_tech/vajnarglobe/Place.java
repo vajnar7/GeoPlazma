@@ -8,9 +8,22 @@ import java.util.ArrayList;
 
 public class Place extends Area
 {
-  Place(ArrayList<Point> points)
+  Place (String name, ArrayList<GeoPoint> points)
   {
-    super(points);
+    super(name);
+    pointSet.addAll(points);
+  }
+
+  Place(String name)
+  {
+    super(name);
+  }
+
+  @Override
+  protected Area mark(GeoPoint a)
+  {
+    pointSet.add(a);
+    return this;
   }
 
   @Override
@@ -42,5 +55,13 @@ public class Place extends Area
       Line l = get(i);
       l.draw(canvas, paint);
     }
+  }
+
+  @Override
+  public Area save()
+  {
+    for (GeoPoint p : pointSet)
+      new SendLocation(getName(), p.timestamp, (double) p.lon, (double) p.lat);
+    return this;
   }
 }
