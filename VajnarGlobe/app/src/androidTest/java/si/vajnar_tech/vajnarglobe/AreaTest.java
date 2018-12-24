@@ -65,13 +65,21 @@ public class AreaTest
   }
 
   @Test
+  public void testFillAllAreas()
+  {
+    testAddArea1();
+    testAddArea2();
+    testAddArea3();
+  }
+
+  @Test
   public void testStartWithArea1()
   {
     new CurrentArea("Iza1")
-        .mark(new GeoPoint(1, 10, 10))
-        .mark(new GeoPoint(2, 300, 10))
-        .mark(new GeoPoint(3, 300, 300))
-        .mark(new GeoPoint(4, 10, 300))
+        .mark(new GeoPoint(10, 10))
+        .mark(new GeoPoint(300, 10))
+        .mark(new GeoPoint(300, 300))
+        .mark(new GeoPoint(10, 300))
         .constructArea().save();
   }
 
@@ -79,10 +87,10 @@ public class AreaTest
   public void testAddArea1()
   {
     ArrayList<GeoPoint> a = new ArrayList<>();
-    a.add(new GeoPoint(1, 10, 10));
-    a.add(new GeoPoint(2, 300, 10));
-    a.add(new GeoPoint(3, 300, 300));
-    a.add(new GeoPoint(4, 10, 300));
+    a.add(new GeoPoint(10, 10));
+    a.add(new GeoPoint(300, 10));
+    a.add(new GeoPoint(300, 300));
+    a.add(new GeoPoint(10, 300));
     new Place("Iza1", a).constructArea().save();
   }
 
@@ -90,10 +98,10 @@ public class AreaTest
   public void testAddArea2()
   {
     ArrayList<GeoPoint> a = new ArrayList<>();
-    a.add(new GeoPoint(1, 300, 10));
-    a.add(new GeoPoint(2, 550, 45));
-    a.add(new GeoPoint(3, 600, 250));
-    a.add(new GeoPoint(4, 300, 300));
+    a.add(new GeoPoint(300, 10));
+    a.add(new GeoPoint(550, 45));
+    a.add(new GeoPoint(600, 250));
+    a.add(new GeoPoint(300, 300));
     new Place("Iza2", a).constructArea().save();
   }
 
@@ -101,13 +109,13 @@ public class AreaTest
   public void testAddArea3()
   {
     ArrayList<GeoPoint> a = new ArrayList<>();
-    a.add(new GeoPoint(1, 10, 300));
-    a.add(new GeoPoint(2, 300, 300));
-    a.add(new GeoPoint(3, 520, 610));
-    a.add(new GeoPoint(4, 5, 510));
-    a.add(new GeoPoint(5, 35, 470));
-    a.add(new GeoPoint(6, 7, 380));
-    new Place("Iza3", a).constructArea();
+    a.add(new GeoPoint(10, 300));
+    a.add(new GeoPoint(300, 300));
+    a.add(new GeoPoint(520, 610));
+    a.add(new GeoPoint(5, 510));
+    a.add(new GeoPoint(35, 470));
+    a.add(new GeoPoint(7, 380));
+    new Place("Iza3", a).constructArea().save();
   }
 
   @Test
@@ -117,7 +125,7 @@ public class AreaTest
     new GetAreas();
     signal.await(2, TimeUnit.SECONDS);
     _startTestGPSService();
-    signal.await(20, TimeUnit.SECONDS);
+    signal.await(2000, TimeUnit.SECONDS);
   }
 
   //**********************************

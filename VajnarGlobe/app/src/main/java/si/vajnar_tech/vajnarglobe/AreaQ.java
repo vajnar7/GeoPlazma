@@ -39,9 +39,9 @@ class GeoPoint
   public float lon;
   public float lat;
 
-  GeoPoint(int timestamp, float lon, float lat)
+  GeoPoint(float lon, float lat)
   {
-    this.timestamp = timestamp;
+    this.timestamp = C.stamp.getAndIncrement();
     this.lon = lon;
     this.lat = lat;
   }
