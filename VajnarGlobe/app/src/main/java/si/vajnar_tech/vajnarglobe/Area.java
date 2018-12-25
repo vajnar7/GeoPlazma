@@ -20,9 +20,8 @@ abstract class Area extends ArrayList<Line>
   Area constructArea()
   {
     _sortPoints();
-
     ArrayList<Point> points = new ArrayList<>();
-    for (GeoPoint p: pointSet)
+    for (GeoPoint p : pointSet)
       points.add(new Point(p.lon, p.lat));
     for (int i = 0; i < points.size() - 1; i++)
       add(new Line(points.get(i), points.get(i + 1)));
@@ -51,7 +50,7 @@ abstract class Area extends ArrayList<Line>
 
   abstract protected ArrayList<Point> process(Point p);
 
-  abstract public void draw(Canvas canvas, Paint paint);
+  abstract public void draw(Canvas canvas, Paint paint, int color);
 
   protected boolean isInside(Point p)
   {
@@ -72,10 +71,12 @@ abstract class Area extends ArrayList<Line>
     return oddNodes;
   }
 
-  Point getClosestPoint(Line l, Point p, Boolean isHorizontal)
+  Point getClosestPoint(Line l, Point p)
   {
-    if (isHorizontal != null)
-      return isHorizontal ? new Point(p.x, l.p1.y) : new Point(l.p1.x, p.y);
+    if (l.f.isHorizontal)
+      return new Point(p.x, l.p1.y);
+    if (l.f.isVertical)
+      return new Point(l.p1.x, p.y);
     double a, b, c;
     a = l.f.a;
     b = l.f.b;
@@ -86,5 +87,5 @@ abstract class Area extends ArrayList<Line>
     return new Point((float) (qx / k), (float) (qy / k));
   }
 
-  protected abstract Area save();
+  protected abstract void save();
 }

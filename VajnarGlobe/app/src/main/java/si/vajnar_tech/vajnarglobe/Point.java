@@ -19,9 +19,16 @@ class Point
     return ("P(" + x + "," + y + ")");
   }
 
-  void draw(Canvas canvas, Paint paint)
+  void draw(Canvas canvas, Paint paint, int color)
   {
-    canvas.drawCircle(x, y, 3, paint);
+    paint.setColor(color);
+    canvas.drawCircle(x, y, 4, paint);
+  }
+
+  void draw(Canvas canvas, Paint paint, int color, int r)
+  {
+    paint.setColor(color);
+    canvas.drawCircle(x, y, r, paint);
   }
 }
 
