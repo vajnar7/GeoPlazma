@@ -7,7 +7,6 @@ import android.graphics.Paint;
 import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 @SuppressWarnings("InfiniteLoopStatement")
 @SuppressLint("ViewConstructor")
@@ -56,36 +55,40 @@ public class WhereAmI extends GPS
 
     paint.setColor(Color.parseColor("#CD5C5C"));
     ArrayList<Vector> V = fs.f();
-    for (int i = 0; i < V.size() - 1; i++) {
+    for (int i = 0; i < V.size() - 1; i++)
       canvas.drawLine((float) V.get(i).x, (float) V.get(i).y,
                       (float) V.get(i + 1).x, (float) V.get(i + 1).y, paint);
-    }
 
-    for (Area a : C.areas.values()) {
-      _drawArea(a, canvas);
-      if (a.isInside(currentPosition)) {
+    for (Area a : C.areas.values())
+      if (a.isInside(currentPosition))
         _drawArea(a, canvas);
-      }
-    }
   }
 
-  private void _drawArea(Area are, Canvas canvas)
+  private void _drawArea(Area area, Canvas canvas)
   {
-    are.draw(canvas, paint);
-    ArrayList<Point> closestPoints = are.process(currentPosition);
-    int i = 0;
+    area.draw(canvas, paint, Color.BLACK);
+    currentPosition.draw(canvas, paint, Color.BLUE);
+    ArrayList<Point> closestPoints = area.process(currentPosition);
+    int              i             = -1;
     for (Point p : closestPoints) {
-      p.draw(canvas, paint);
+      i++;
+      if (area.get(i).onMe(p))
+        p.draw(canvas, paint, Color.GREEN);
       Point startPoint = fs.getAt(0).toPoint();
-      startPoint.draw(canvas, paint);
-      currentPosition.draw(canvas, paint);
+      startPoint.draw(canvas, paint, Color.YELLOW);
+
       Line approx = new Line(startPoint, currentPosition);
-      approx.draw(canvas, paint);
-      Point predictor = approx.intersection(are.get(i));
-      if (predictor != null)
-        predictor.draw(canvas, paint);
+      if (approx.f.isInvalid)
+        continue;
+      approx.draw(canvas, paint, Color.RED);
+
+
+      Point predictor = approx.intersection(area.get(i));
+      if (predictor != null && area.get(i).onMe(predictor))
+        predictor.draw(canvas, paint, Color.MAGENTA, 5);
       else
         continue;
+
       Vector ttt = new Vector(predictor.x, predictor.y);
       Vector ccc = new Vector(currentPosition.x, currentPosition.y);
       Vector qqq = ttt._minus(ccc);
@@ -93,9 +96,7 @@ public class WhereAmI extends GPS
       Vector sume = fv.integral();
       Vector time = new Vector(Math.abs(qqq.x / sume.x), Math.abs(qqq.y / sume.y));
       //Log.i("IZAA", "vektor casa=" + time);
-      Log.i("IZAA", String.format("do meje %d bos prisel cez ", i) + (time.x + time.y) + " sekund");
-      i++;
-      canvas.drawLine(currentPosition.x, currentPosition.y, p.x, p.y, paint);
+      Log.i("IZAAA", String.format("do meje %d bos prisel cez ", i) + (time.x + time.y) + " sekund");
     }
   }
 
