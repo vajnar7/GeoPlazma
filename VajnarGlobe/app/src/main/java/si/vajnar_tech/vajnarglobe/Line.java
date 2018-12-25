@@ -40,26 +40,34 @@ class Line
   {
     Point a = p1;
     Point b = p2;
-    if (p1.x > p2.x) {
-      a = p2;
-      b = p1;
-    }
 
     // horizontalna
-    if (f.isHorizontal && (p.x > b.x || p.x < a.x))
-      return false;
+    if (f.isHorizontal) {
+      if (p1.x > p2.x) {
+        a = p2;
+        b = p1;
+      }
+      if (p.x > b.x || p.x < a.x)
+        return false;
+    }
+
     // vertical
-    if (f.isVertical && (p.y > b.y || p.y < a.y))
-      return false;
+    if (f.isVertical) {
+      if (p1.y > p2.y) {
+        a = p2;
+        b = p1;
+      }
+      if (p.y > b.y || p.y < a.y)
+        return false;
+    }
 
     // narascajoca funkcija: k > 0
     if (f.a > 0)
       if (p.x > b.x && p.y > b.y
           || p.x < a.x && p.y < a.y)
         return false;
-    else
-      if (p.x > b.x && p.y < b.y
-          || p.x < a.x && p.y > a.y)
+      else if (p.x > b.x && p.y < b.y
+               || p.x < a.x && p.y > a.y)
         return false;
     return true;
   }
@@ -72,12 +80,10 @@ class Line
     if (a == 0 && b != 0) {
       m = p2.x > p1.x ? 1 : -1;
       f = new Fun("horizontal", m);
-    }
-    else if (a != 0 && b == 0) {
+    } else if (a != 0 && b == 0) {
       m = p2.y > p1.y ? 1 : -1;
       f = new Fun("vertical", m);
-    }
-    else if (a == 0)
+    } else if (a == 0)
       f = new Fun("invalid", 0);
     else {
       m = a / b;
@@ -87,7 +93,7 @@ class Line
 
   class Fun
   {
-    float   a            = 0;
+    float a;
     float   b            = 0;
     float   c            = 0;
     boolean isHorizontal = false;
