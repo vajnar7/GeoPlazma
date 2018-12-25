@@ -40,7 +40,6 @@ class Line
   {
     Point a = p1;
     Point b = p2;
-
     // horizontalna
     if (f.isHorizontal) {
       if (p1.x > p2.x) {
@@ -50,7 +49,6 @@ class Line
       if (p.x > b.x || p.x < a.x)
         return false;
     }
-
     // vertical
     if (f.isVertical) {
       if (p1.y > p2.y) {
@@ -60,15 +58,17 @@ class Line
       if (p.y > b.y || p.y < a.y)
         return false;
     }
-
-    // narascajoca funkcija: k > 0
-    if (f.a > 0)
-      if (p.x > b.x && p.y > b.y
-          || p.x < a.x && p.y < a.y)
+    if (a.x > b.x) {
+      a = p2;
+      b = p1;
+    }
+    if (f.a > 0) {
+      if (p.x > b.x && p.y > b.y || p.x < a.x && p.y < a.y)
         return false;
-      else if (p.x > b.x && p.y < b.y
-               || p.x < a.x && p.y > a.y)
+    } else {
+      if (p.x > b.x && p.y < b.y || p.x < a.x && p.y > a.y)
         return false;
+    }
     return true;
   }
 
