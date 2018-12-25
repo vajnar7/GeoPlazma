@@ -22,15 +22,11 @@ class Line
     float s = l2.f.c - f.c;
 
     // second line is vertical
-    if (l2.f.isVertical) {
-      float yyy = f.a * l2.p1.x + f.c;
-      return new Point(l2.p1.x, yyy);
-    }
+    if (l2.f.isVertical)
+      return new Point(l2.p1.x, f.a * l2.p1.x + f.c);
     // second line is horizontal
-    if (l2.f.isHorizontal) {
-      float xxx = (l2.p1.y - f.c) / f.a;
-      return new Point(xxx, l2.p1.y);
-    }
+    if (l2.f.isHorizontal)
+      return new Point((l2.p1.y - f.c) / f.a, l2.p1.y);
 
     if (k == 0 || s == 0)
       return null;
@@ -40,18 +36,51 @@ class Line
     return new Point(x, y);
   }
 
+  boolean onMe(Point p)
+  {
+    Point a = p1;
+    Point b = p2;
+    if (p1.x > p2.x) {
+      a = p2;
+      b = p1;
+    }
+
+    // horizontalna
+    if (f.isHorizontal && (p.x > b.x || p.x < a.x))
+      return false;
+    // vertical
+    if (f.isVertical && (p.y > b.y || p.y < a.y))
+      return false;
+
+    // narascajoca funkcija: k > 0
+    if (f.a > 0)
+      if (p.x > b.x && p.y > b.y
+          || p.x < a.x && p.y < a.y)
+        return false;
+    else
+      if (p.x > b.x && p.y < b.y
+          || p.x < a.x && p.y > a.y)
+        return false;
+    return true;
+  }
+
   private void _defineF()
   {
     float a = p2.y - p1.y; // if 0 horizontal
     float b = p2.x - p1.x; // if 0 vertical
-    if (a == 0 && b != 0)
-      f = new Fun("horizontal");
-    else if (a != 0 && b == 0)
-      f = new Fun("vertical");
+    float m;
+    if (a == 0 && b != 0) {
+      m = p2.x > p1.x ? 1 : -1;
+      f = new Fun("horizontal", m);
+    }
+    else if (a != 0 && b == 0) {
+      m = p2.y > p1.y ? 1 : -1;
+      f = new Fun("vertical", m);
+    }
     else if (a == 0)
-      f = new Fun("invalid");
+      f = new Fun("invalid", 0);
     else {
-      float m = a / b;
+      m = a / b;
       f = new Fun(m, -1, p1.y - (m * p1.x));
     }
   }
@@ -65,7 +94,7 @@ class Line
     boolean isVertical   = false;
     boolean isInvalid    = false;
 
-    Fun(String s)
+    Fun(String s, float m)
     {
       switch (s) {
       case "vertical":
@@ -78,6 +107,7 @@ class Line
         isInvalid = true;
         break;
       }
+      a = m;
     }
 
     Fun(float a, float b, float c)
