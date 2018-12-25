@@ -62,14 +62,10 @@ class Line
       a = p2;
       b = p1;
     }
-    if (f.a > 0) {
-      if (p.x > b.x && p.y > b.y || p.x < a.x && p.y < a.y)
-        return false;
-    } else {
-      if (p.x > b.x && p.y < b.y || p.x < a.x && p.y > a.y)
-        return false;
-    }
-    return true;
+    if (f.a > 0)
+      return (!(p.x > b.x) || !(p.y > b.y)) && (!(p.x < a.x) || !(p.y < a.y));
+    else
+      return (!(p.x > b.x) || !(p.y < b.y)) && (!(p.x < a.x) || !(p.y > a.y));
   }
 
   private void _defineF()
