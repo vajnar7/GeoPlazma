@@ -7,10 +7,10 @@ class Point
 {
   float x, y;
 
-  Point(float x, float y)
+  Point(double x, double y)
   {
-    this.x = x;
-    this.y = y;
+    this.x = (float) x;
+    this.y = (float) y;
   }
 
   @Override

@@ -80,7 +80,7 @@ public class AreaTest
         .mark(new GeoPoint(300, 10))
         .mark(new GeoPoint(300, 300))
         .mark(new GeoPoint(10, 300))
-        .constructArea().save();
+        .constructArea();
   }
 
   @Test
@@ -121,7 +121,6 @@ public class AreaTest
   @Test
   public void hoja() throws InterruptedException
   {
-    // Najprej nalozi vse polozaje iz baze
     new GetAreas();
     signal.await(2, TimeUnit.SECONDS);
     _startTestGPSService();

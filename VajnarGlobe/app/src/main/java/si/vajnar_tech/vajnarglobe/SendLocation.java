@@ -8,7 +8,7 @@ public class SendLocation extends REST<LocationObj>
   private Double longitude;
   private Integer timestamp;
 
-  SendLocation(String areaName, Integer timestamp, Double longitude, Double latitude)
+  SendLocation(String areaName, int timestamp, double longitude, double latitude)
   {
     super(String.format(AREAS, areaName));
     this.timestamp = timestamp;

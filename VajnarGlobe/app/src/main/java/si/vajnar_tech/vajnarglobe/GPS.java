@@ -1,15 +1,19 @@
 //http://rkg.gov.si/GERK/WebViewer/
 package si.vajnar_tech.vajnarglobe;
 
+import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 public abstract class GPS extends View implements LocationListener
 {
@@ -38,26 +42,42 @@ public abstract class GPS extends View implements LocationListener
 
   private void enableGPSService()
   {
+    final String[] INITIAL_PERMS = {
+        Manifest.permission.ACCESS_FINE_LOCATION,
+        Manifest.permission.ACCESS_COARSE_LOCATION
+    };
+    final int INITIAL_REQUEST = 1337;
+
+    ctx.requestPermissions(INITIAL_PERMS, INITIAL_REQUEST);
+
     LocationManager locationManager = (LocationManager) ctx.getSystemService(Context.LOCATION_SERVICE);
 
-    if (locationManager == null)
+    if (locationManager == null) {
       Log.i(TAG, "Cannot get the LocationManager");
-    else
+      return;
+    } else
       Log.i(TAG, "The LocationManager successfully granted");
 
-    if (ContextCompat.checkSelfPermission(
+    if (ActivityCompat.checkSelfPermission(
         ctx,
-        android.Manifest.permission.ACCESS_FINE_LOCATION) ==
-        PackageManager.PERMISSION_GRANTED ||
-        ContextCompat.checkSelfPermission(
+        Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+        ActivityCompat.checkSelfPermission(
             ctx,
-            android.Manifest.permission.ACCESS_COARSE_LOCATION) ==
-        PackageManager.PERMISSION_GRANTED) {
-      assert locationManager != null;
-      locationManager.requestLocationUpdates(
-          LocationManager.GPS_PROVIDER, MINIMUM_TIME,
-          MINIMUM_DISTANCE, this);
+            Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+      (new AlertDialog.Builder(ctx)
+           .setTitle("GPS not granted")
+           .setMessage("Application will exit")
+           .setPositiveButton("OK", new DialogInterface.OnClickListener()
+           {
+             @Override public void onClick(DialogInterface dialog, int which)
+             {
+               ctx.finish();
+             }
+           }).create()).show();
+      return;
     }
+    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+    Toast.makeText(ctx, "GPS granted", Toast.LENGTH_SHORT).show();
   }
 
   @Override
@@ -67,6 +87,7 @@ public abstract class GPS extends View implements LocationListener
     longitude = location.getLongitude();
     gotLocation = true;
     notifyMe(new Vector(longitude, latitude), currentTime);
+    notifyMe(location);
   }
 
   @Override
@@ -82,4 +103,6 @@ public abstract class GPS extends View implements LocationListener
   {}
 
   protected abstract void notifyMe(Vector point, int timestamp);
+
+  protected abstract void notifyMe(Location loc);
 }

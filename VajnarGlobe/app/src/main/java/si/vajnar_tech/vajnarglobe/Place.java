@@ -24,6 +24,7 @@ public class Place extends Area
   protected Area mark(GeoPoint a)
   {
     pointSet.add(a);
+    new SendLocation(getName(), a.timestamp, a.lon, a.lat);
     return this;
   }
 
@@ -67,7 +68,13 @@ public class Place extends Area
   @Override
   public void save()
   {
-    for (GeoPoint p : pointSet)
-      new SendLocation(getName(), p.timestamp, (double) p.lon, (double) p.lat);
+    for (GeoPoint p : pointSet) {
+      new SendLocation(getName(), p.timestamp, p.lon, p.lat);
+      try {
+        Thread.sleep(1000);
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+    }
   }
 }

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.location.Location;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -46,6 +47,10 @@ public class WhereAmI extends GPS
         invalidate();
       }
     });
+  }
+
+  @Override protected void notifyMe(Location loc)
+  {
   }
 
   @Override

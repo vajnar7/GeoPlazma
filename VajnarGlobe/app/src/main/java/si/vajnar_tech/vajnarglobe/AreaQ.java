@@ -36,10 +36,10 @@ class AreaP
 class GeoPoint
 {
   public int timestamp;
-  public float lon;
-  public float lat;
+  public double lon;
+  public double lat;
 
-  GeoPoint(float lon, float lat)
+  GeoPoint(double lon, double lat)
   {
     this.timestamp = C.stamp.getAndIncrement();
     this.lon = lon;
