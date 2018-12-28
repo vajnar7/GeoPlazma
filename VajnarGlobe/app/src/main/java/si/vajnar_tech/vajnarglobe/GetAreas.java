@@ -1,5 +1,6 @@
 package si.vajnar_tech.vajnarglobe;
 
+import android.util.Log;
 import android.view.Display;
 
 import java.util.ArrayList;
@@ -8,12 +9,9 @@ import static si.vajnar_tech.vajnarglobe.Login.GET_ALL;
 
 public class GetAreas extends REST<AreaQ>
 {
-  private Display d;
-
-  GetAreas(Display display)
+  GetAreas()
   {
     super(GET_ALL);
-    d = display;
   }
 
   @Override
@@ -28,7 +26,7 @@ public class GetAreas extends REST<AreaQ>
     super.onPostExecute(j);
     if (j != null) {
       for (AreaP t : j.areas) {
-        C.areas.put(t.name, new Place(t.name, (ArrayList<GeoPoint>) t.points, d).constructArea());
+        C.areas.put(t.name, new Place(t.name, (ArrayList<GeoPoint>) t.points).constructArea());
       }
     }
   }
