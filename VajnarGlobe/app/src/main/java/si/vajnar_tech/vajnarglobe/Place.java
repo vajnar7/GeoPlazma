@@ -4,20 +4,56 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.Log;
+import android.view.Display;
 
 import java.util.ArrayList;
 
 public class Place extends Area
 {
-  Place(String name, ArrayList<GeoPoint> points)
+  Place(String name, ArrayList<GeoPoint> points, Display d)
   {
     super(name);
-    pointSet.addAll(points);
+    pointSet.addAll(_wrapper(points, d));
   }
 
   Place(String name)
   {
     super(name);
+  }
+
+  private ArrayList<GeoPoint> _wrapper(ArrayList<GeoPoint> points, Display display)
+  {
+    android.graphics.Point size    = new android.graphics.Point();
+    display.getSize(size);
+    ArrayList<GeoPoint> w = new ArrayList<>();
+    for (GeoPoint p: points) {
+      double x = p.lon;
+      {
+        x *= 1000;
+        x -= 13825;
+        x *= 1000;
+
+        x -= 200;
+      }
+      double y = p.lat;
+      {
+        y *= 100;
+        y -= 4648;
+        y *= 1000;
+
+        y *= 10;
+        y -= 5900;
+
+        y = size.y - y;
+      }
+      Log.i("IZAA", "X=" + x);
+      Log.i("IZAA", "Y=" + y);
+      Log.i("IZAA", "sizeX=" + size.x);
+      Log.i("IZAA", "sizeY=" + size.y);
+      w.add(new GeoPoint(x, y));
+    }
+
+    return w;
   }
 
   @Override
