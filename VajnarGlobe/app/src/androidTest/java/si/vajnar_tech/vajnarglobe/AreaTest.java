@@ -60,7 +60,7 @@ public class AreaTest
   public void getAllAreas() throws InterruptedException
   {
     signal.await(5, TimeUnit.SECONDS);
-    new GetAreas(act.getWindowManager().getDefaultDisplay());
+    new GetAreas();
     signal.await(5, TimeUnit.SECONDS);
   }
 
@@ -91,7 +91,7 @@ public class AreaTest
     a.add(new GeoPoint(300, 10));
     a.add(new GeoPoint(300, 300));
     a.add(new GeoPoint(10, 300));
-    new Place("Iza1", a, act.getWindowManager().getDefaultDisplay()).constructArea().save();
+    new Place("Iza1", a).constructArea().save();
   }
 
   @Test
@@ -102,7 +102,7 @@ public class AreaTest
     a.add(new GeoPoint(550, 45));
     a.add(new GeoPoint(600, 250));
     a.add(new GeoPoint(300, 300));
-    new Place("Iza2", a, act.getWindowManager().getDefaultDisplay()).constructArea().save();
+    new Place("Iza2", a).constructArea().save();
   }
 
   @Test
@@ -115,13 +115,13 @@ public class AreaTest
     a.add(new GeoPoint(5, 510));
     a.add(new GeoPoint(35, 470));
     a.add(new GeoPoint(7, 380));
-    new Place("Iza3", a, act.getWindowManager().getDefaultDisplay()).constructArea().save();
+    new Place("Iza3", a).constructArea().save();
   }
 
   @Test
   public void hoja() throws InterruptedException
   {
-    new GetAreas(act.getWindowManager().getDefaultDisplay());
+    new GetAreas();
     signal.await(2, TimeUnit.SECONDS);
     _startTestGPSService();
     signal.await(2000, TimeUnit.SECONDS);
