@@ -4,16 +4,15 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.Log;
-import android.view.Display;
 
 import java.util.ArrayList;
 
 public class Place extends Area
 {
-  Place(String name, ArrayList<GeoPoint> points, Display d)
+  Place(String name, ArrayList<GeoPoint> points)
   {
     super(name);
-    pointSet.addAll(_wrapper(points, d));
+    pointSet.addAll(_wrapper(points));
   }
 
   Place(String name)
@@ -21,38 +20,39 @@ public class Place extends Area
     super(name);
   }
 
-  private ArrayList<GeoPoint> _wrapper(ArrayList<GeoPoint> points, Display display)
+  private GeoPoint _min(ArrayList<GeoPoint> points)
   {
-    android.graphics.Point size    = new android.graphics.Point();
-    display.getSize(size);
-    ArrayList<GeoPoint> w = new ArrayList<>();
-    for (GeoPoint p: points) {
-      double x = p.lon;
-      {
-        x *= 1000;
-        x -= 13825;
-        x *= 1000;
-
-        x -= 200;
-      }
-      double y = p.lat;
-      {
-        y *= 100;
-        y -= 4648;
-        y *= 1000;
-
-        y *= 10;
-        y -= 5900;
-
-        y = size.y - y;
-      }
-      Log.i("IZAA", "X=" + x);
-      Log.i("IZAA", "Y=" + y);
-      Log.i("IZAA", "sizeX=" + size.x);
-      Log.i("IZAA", "sizeY=" + size.y);
-      w.add(new GeoPoint(x, y));
+    GeoPoint res = new GeoPoint(points.get(0).lon, points.get(0).lat);
+    for (GeoPoint o : points) {
+      if (o.lon < res.lon)
+        res.lon = o.lon;
+      if (o.lat < res.lat)
+        res.lat = o.lat;
     }
+    return res;
+  }
 
+  private GeoPoint _transform(GeoPoint p, int scale, int xOffset, int yOffset, GeoPoint smuk)
+  {
+    GeoPoint res = new GeoPoint(p.lon, p.lat);
+    res.lon *= scale;
+    res.lon -= (xOffset * 1000);
+    res.lat *= scale;
+    res.lat -= (yOffset * 10000);
+    if (smuk != null) {
+      res.lon -= smuk.lon;
+      res.lat -= smuk.lat;
+    }
+    return res;
+  }
+
+  private ArrayList<GeoPoint> _wrapper(ArrayList<GeoPoint> points)
+  {
+    ArrayList<GeoPoint> w = new ArrayList<>();
+    GeoPoint min = _min(points);
+    min = _transform(min, 1000000, 13825, 4648, null);
+    for (GeoPoint p: points)
+      w.add(_transform(p, 1000000, 13825, 4648, min));
     return w;
   }
 
