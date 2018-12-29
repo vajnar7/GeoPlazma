@@ -15,18 +15,17 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 public abstract class GPS extends View implements LocationListener
 {
   private static final String TAG              = "IZAA-GPS";
   private static final double DEF_LONGITUDE    = 122;  //x
   private static final double DEF_LATITUDE     = 36;   //y
-  private static final int    MINIMUM_TIME     = 10000;// 10s
-  private static final int    MINIMUM_DISTANCE = 30;   // 30m
 
-  public    String       area;
-  protected double       latitude;
-  protected double       longitude;
-  protected int          currentTime;
+  protected double latitude;
+  protected double longitude;
+  protected AtomicInteger currentTime = new AtomicInteger(0);
   protected MainActivity ctx;
   public boolean gotLocation = false;
 
@@ -36,7 +35,6 @@ public abstract class GPS extends View implements LocationListener
     this.ctx = ctx;
     latitude = DEF_LATITUDE;
     longitude = DEF_LONGITUDE;
-    currentTime = 0;
     enableGPSService();
   }
 
@@ -86,7 +84,7 @@ public abstract class GPS extends View implements LocationListener
     latitude = location.getLatitude();
     longitude = location.getLongitude();
     gotLocation = true;
-    notifyMe(new Vector(longitude, latitude), currentTime);
+    notifyMe(new Vector(longitude, latitude), currentTime.incrementAndGet());
     notifyMe(location);
   }
 
