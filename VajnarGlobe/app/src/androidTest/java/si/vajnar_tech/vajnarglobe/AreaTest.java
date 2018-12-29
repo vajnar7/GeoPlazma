@@ -160,7 +160,6 @@ public class AreaTest
         Random r = new Random();
         while (true) {
           int t = r.nextInt(maxT - minT) + minT;
-          act.gpsService.currentTime += t;
           loc.setLatitude(act.gpsService.latitude + r.nextInt(max - min) + min);
           loc.setLongitude(act.gpsService.longitude + r.nextInt(max - min) + min);
           act.gpsService.onLocationChanged(loc);

@@ -10,6 +10,7 @@ import java.util.Comparator;
 abstract class Area extends ArrayList<Line>
 {
   private String areaName;
+  GeoPoint min;
   ArrayList<GeoPoint> pointSet = new ArrayList<>();
 
   Area(String name)
