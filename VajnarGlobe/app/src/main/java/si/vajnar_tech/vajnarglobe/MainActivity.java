@@ -4,13 +4,14 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-@SuppressWarnings("FieldCanBeLocal")
+@SuppressWarnings({"FieldCanBeLocal", "ConstantConditions"})
 public class MainActivity extends AppCompatActivity implements View.OnClickListener
 {
   private final String TAG = "IZAA-MAIN";
@@ -23,23 +24,36 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
   protected void onCreate(Bundle savedInstanceState)
   {
     super.onCreate(savedInstanceState);
-    // gpsService = new WhereAmI(this);
-    arduni = new Arduni(this);
+    switch (C.mode) {
+    case "capture":
+      arduni = new Arduni(this);
+      LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+      assert inflater != null;
+      @SuppressLint("InflateParams")
+      LinearLayout root = (LinearLayout) inflater.inflate(R.layout.activity_main, null);
 
-    LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-    assert inflater != null;
-    @SuppressLint("InflateParams")
-    LinearLayout root = (LinearLayout) inflater.inflate(R.layout.activity_main, null);
+      setContentView(root);
 
-    setContentView(root);
+      findViewById(R.id.send).setOnClickListener(this);
+      findViewById(R.id.construct).setOnClickListener(this);
+      currentArea = new CurrentArea("Test1");
 
-    findViewById(R.id.send).setOnClickListener(this);
-    findViewById(R.id.construct).setOnClickListener(this);
-    currentArea = new CurrentArea("Test1");
-
-    arduni = new Arduni(this);
-
-    printLocation();
+      printLocation();
+      break;
+    case "track":
+      gpsService = new WhereAmI(this);
+      setContentView(gpsService);
+      Display display = getWindowManager().getDefaultDisplay();
+      display.getSize(C.size);
+      final MainActivity act = this;
+      new GetAreas(new Runnable() {
+        @Override public void run()
+        {
+          gpsService.invalidate();
+          C.startTestGPSService(act);
+        }
+      });
+    }
   }
 
   public void printLocation()

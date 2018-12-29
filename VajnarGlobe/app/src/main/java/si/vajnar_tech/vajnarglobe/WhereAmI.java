@@ -21,7 +21,7 @@ public class WhereAmI extends GPS
   D          dt    = new D();
   D dv;
 
-  Point currentPosition;
+  Point currentPosition = new Point(0, 0);
 
   WhereAmI(MainActivity ctx)
   {
@@ -65,14 +65,15 @@ public class WhereAmI extends GPS
                       (float) V.get(i + 1).x, (float) V.get(i + 1).y, paint);
 
     for (Area a : C.areas.values())
-      if (a.isInside(currentPosition))
-        _drawArea(a, canvas);
+      _drawArea(a, canvas);
   }
 
   private void _drawArea(Area area, Canvas canvas)
   {
     area.draw(canvas, paint, Color.BLACK);
     currentPosition.draw(canvas, paint, Color.BLUE);
+    if (!area.isInside(currentPosition))
+      return;
     ArrayList<Point> closestPoints = area.process(currentPosition);
     int              i             = -1;
     for (Point p : closestPoints) {
