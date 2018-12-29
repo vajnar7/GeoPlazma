@@ -9,9 +9,16 @@ import static si.vajnar_tech.vajnarglobe.Login.GET_ALL;
 
 public class GetAreas extends REST<AreaQ>
 {
+  private Runnable r;
   GetAreas()
   {
     super(GET_ALL);
+  }
+
+  GetAreas(Runnable run)
+  {
+    super(GET_ALL);
+    r = run;
   }
 
   @Override
@@ -28,6 +35,8 @@ public class GetAreas extends REST<AreaQ>
       for (AreaP t : j.areas) {
         C.areas.put(t.name, new Place(t.name, (ArrayList<GeoPoint>) t.points).constructArea());
       }
+      if (r != null )
+        r.run();
     }
   }
 }
