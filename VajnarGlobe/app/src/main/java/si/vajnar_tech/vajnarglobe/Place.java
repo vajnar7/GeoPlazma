@@ -7,13 +7,13 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
-@SuppressWarnings("SameParameterValue") public class Place extends Area
+public class Place extends Area
 {
   Place(String name, ArrayList<GeoPoint> points)
   {
     super(name);
-    min = min(points);
-    min = transform(min, 1000000, 13825, 4648, null);
+    min = _min(points);
+    min = _transform(min, false);
     pointSet.addAll(_wrapper(points));
   }
 
@@ -22,7 +22,7 @@ import java.util.ArrayList;
     super(name);
   }
 
-  private static GeoPoint min(ArrayList<GeoPoint> points)
+  private GeoPoint _min(ArrayList<GeoPoint> points)
   {
     GeoPoint res = new GeoPoint(points.get(0).lon, points.get(0).lat);
     for (GeoPoint o : points) {
@@ -34,16 +34,19 @@ import java.util.ArrayList;
     return res;
   }
 
-  private static GeoPoint transform(GeoPoint p, int scale, int xOffset, int yOffset, GeoPoint smuk)
+  private GeoPoint _transform(GeoPoint p, boolean norm)
   {
+    int scale = 1000000;
+    int xOffset = 13825;
+    int yOffset = 4648;
     GeoPoint res = new GeoPoint(p.lon, p.lat);
     res.lon *= scale;
     res.lon -= (xOffset * 1000);
     res.lat *= scale;
     res.lat -= (yOffset * 10000);
-    if (smuk != null) {
-      res.lon -= smuk.lon;
-      res.lat -= smuk.lat;
+    if (norm) {
+      res.lon -= min.lon;
+      res.lat -= min.lat;
     }
     return res;
   }
@@ -52,7 +55,7 @@ import java.util.ArrayList;
   {
     ArrayList<GeoPoint> w = new ArrayList<>();
     for (GeoPoint p: points)
-      w.add(transform(p, 1000000, 13825, 4648, min));
+      w.add(_transform(p, true));
     return w;
   }
 
