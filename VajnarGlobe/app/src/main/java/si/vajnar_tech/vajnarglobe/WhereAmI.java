@@ -60,6 +60,7 @@ public class WhereAmI extends GPS
 
     paint.setColor(Color.parseColor("#CD5C5C"));
     ArrayList<Vector> V = fs.f();
+    // TODO:
     for (int i = 0; i < V.size() - 1; i++)
       canvas.drawLine((float) V.get(i).x, (float) V.get(i).y,
                       (float) V.get(i + 1).x, (float) V.get(i + 1).y, paint);
@@ -71,7 +72,7 @@ public class WhereAmI extends GPS
   private void _drawArea(Area area, Canvas canvas)
   {
     area.draw(canvas, paint, Color.BLACK);
-    currentPosition.draw(canvas, paint, Color.BLUE);
+    currentPosition.draw(canvas, paint, Color.CYAN, area);
     if (!area.isInside(currentPosition))
       return;
     ArrayList<Point> closestPoints = area.process(currentPosition);
@@ -79,19 +80,18 @@ public class WhereAmI extends GPS
     for (Point p : closestPoints) {
       i++;
       if (area.get(i).onMe(p))
-        p.draw(canvas, paint, Color.GREEN);
+        p.draw(canvas, paint, Color.GREEN, area);
       Point startPoint = fs.getAt(0).toPoint();
-      startPoint.draw(canvas, paint, Color.YELLOW);
+      startPoint.draw(canvas, paint, Color.YELLOW, area);
 
       Line approx = new Line(startPoint, currentPosition);
       if (approx.f.isInvalid)
         continue;
-      approx.draw(canvas, paint, Color.RED);
-
+      approx.draw(canvas, paint, Color.RED, area);
 
       Point predictor = approx.intersection(area.get(i));
       if (predictor != null && area.get(i).onMe(predictor))
-        predictor.draw(canvas, paint, Color.MAGENTA, 5);
+        predictor.draw(canvas, paint, Color.MAGENTA, 5, area);
       else
         continue;
 

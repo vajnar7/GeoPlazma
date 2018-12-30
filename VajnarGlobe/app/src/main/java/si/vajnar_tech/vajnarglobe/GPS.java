@@ -74,7 +74,8 @@ public abstract class GPS extends View implements LocationListener
            }).create()).show();
       return;
     }
-    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+    // TODO: nastavi up-time in ms and up-distance in meters
+    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 2, this);
     Toast.makeText(ctx, "GPS granted", Toast.LENGTH_SHORT).show();
   }
 

@@ -32,8 +32,9 @@ public class GetAreas extends REST<AreaQ>
   {
     super.onPostExecute(j);
     if (j != null) {
-      for (AreaP t : j.areas) {
-        C.areas.put(t.name, new Place(t.name, (ArrayList<GeoPoint>) t.points).constructArea());
+      C.areas.clear();
+      for (AreaP a : j.areas) {
+        C.areas.put(a.name, new Place(a.name, (ArrayList<GeoPoint>) a.points).constructArea());
       }
       if (r != null )
         r.run();

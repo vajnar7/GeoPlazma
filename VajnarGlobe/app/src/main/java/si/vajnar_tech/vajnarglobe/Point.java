@@ -3,9 +3,10 @@ package si.vajnar_tech.vajnarglobe;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
+@SuppressWarnings("SameParameterValue")
 class Point
 {
-  float x, y;
+  double x, y;
 
   Point(double x, double y)
   {
@@ -19,16 +20,20 @@ class Point
     return ("P(" + x + "," + y + ")");
   }
 
-  void draw(Canvas canvas, Paint paint, int color)
+  void draw(Canvas canvas, Paint paint, int color, Area a)
   {
+    // render
     paint.setColor(color);
-    canvas.drawCircle(x, y, 4, paint);
+    Point o1 = a.transform(new Point(x, y), true);
+    canvas.drawCircle((float) o1.x, (float) o1.y, 4, paint);
   }
 
-  void draw(Canvas canvas, Paint paint, int color, int r)
+  void draw(Canvas canvas, Paint paint, int color, int r, Area a)
   {
+    // render
     paint.setColor(color);
-    canvas.drawCircle(x, y, r, paint);
+    Point o1 = a.transform(new Point(x, y), true);
+    canvas.drawCircle((float) o1.x, (float) o1.y, r, paint);
   }
 }
 

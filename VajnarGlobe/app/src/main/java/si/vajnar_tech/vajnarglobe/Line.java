@@ -18,8 +18,8 @@ class Line
 
   Point intersection(Line l2)
   {
-    float k = f.a - l2.f.a;
-    float s = l2.f.c - f.c;
+    double k = f.a - l2.f.a;
+    double s = l2.f.c - f.c;
 
     // second line is vertical
     if (l2.f.isVertical)
@@ -31,8 +31,8 @@ class Line
     if (k == 0 || s == 0)
       return null;
 
-    float x = s / k;
-    float y = f.a * x + f.c;
+    double x = s / k;
+    double y = f.a * x + f.c;
     return new Point(x, y);
   }
 
@@ -70,9 +70,9 @@ class Line
 
   private void _defineF()
   {
-    float a = p2.y - p1.y; // if 0 horizontal
-    float b = p2.x - p1.x; // if 0 vertical
-    float m;
+    double a = p2.y - p1.y; // if 0 horizontal
+    double b = p2.x - p1.x; // if 0 vertical
+    double m;
     if (a == 0 && b != 0) {
       m = p2.x > p1.x ? 1 : -1;
       f = new Fun("horizontal", m);
@@ -89,14 +89,14 @@ class Line
 
   class Fun
   {
-    float a;
-    float   b            = 0;
-    float   c            = 0;
+    double a;
+    double b             = 0;
+    double c             = 0;
     boolean isHorizontal = false;
     boolean isVertical   = false;
     boolean isInvalid    = false;
 
-    Fun(String s, float m)
+    Fun(String s, double m)
     {
       switch (s) {
       case "vertical":
@@ -112,7 +112,7 @@ class Line
       a = m;
     }
 
-    Fun(float a, float b, float c)
+    Fun(double a, double b, double c)
     {
       this.a = a;
       this.b = b;
@@ -120,10 +120,13 @@ class Line
     }
   }
 
-  void draw(Canvas c, Paint p, int color)
+  void draw(Canvas c, Paint p, int color, Area a)
   {
+    // render
     p.setColor(color);
-    c.drawLine(p1.x, p1.y, p2.x, p2.y, p);
+    Point o1 = a.transform(new Point(p1.x, p1.y), true);
+    Point o2 = a.transform(new Point(p2.x, p2.y), true);
+    c.drawLine((float) o1.x, (float) o1.y, (float) o2.x, (float) o2.y, p);
   }
 
   @Override

@@ -11,10 +11,7 @@ public class Place extends Area
 {
   Place(String name, ArrayList<GeoPoint> points)
   {
-    super(name);
-    min = _min(points);
-    min = _transform(min, false);
-    pointSet.addAll(_wrapper(points));
+    super(name, points);
   }
 
   Place(String name)
@@ -22,47 +19,28 @@ public class Place extends Area
     super(name);
   }
 
-  private GeoPoint _min(ArrayList<GeoPoint> points)
-  {
-    GeoPoint res = new GeoPoint(points.get(0).lon, points.get(0).lat);
-    for (GeoPoint o : points) {
-      if (o.lon < res.lon)
-        res.lon = o.lon;
-      if (o.lat < res.lat)
-        res.lat = o.lat;
-    }
-    return res;
-  }
-
-  private GeoPoint _transform(GeoPoint p, boolean norm)
+  @Override
+  protected Point transform(Point p, boolean norm)
   {
     int scale = 1000000;
     int xOffset = 13825;
     int yOffset = 4648;
-    GeoPoint res = new GeoPoint(p.lon, p.lat);
-    res.lon *= scale;
-    res.lon -= (xOffset * 1000);
-    res.lat *= scale;
-    res.lat -= (yOffset * 10000);
+    Point res = new Point(p.x, p.y);
+    res.x *= scale;
+    res.x -= (xOffset * 1000);
+    res.y *= scale;
+    res.y -= (yOffset * 10000);
     if (norm) {
-      res.lon -= min.lon;
-      res.lat -= min.lat;
+      res.x -= min.x;
+      res.y -= min.y;
     }
     return res;
-  }
-
-  private ArrayList<GeoPoint> _wrapper(ArrayList<GeoPoint> points)
-  {
-    ArrayList<GeoPoint> w = new ArrayList<>();
-    for (GeoPoint p: points)
-      w.add(_transform(p, true));
-    return w;
   }
 
   @Override
   protected Area mark(GeoPoint a)
   {
-    pointSet.add(a);
+    geoPoints.add(a);
     new SendLocation(getName(), a.timestamp, a.lon, a.lat);
     return this;
   }
@@ -97,17 +75,15 @@ public class Place extends Area
   @Override
   public void draw(Canvas canvas, Paint paint, int color)
   {
-    paint.setColor(color);
-    for (int i = 0; i < size(); i++) {
-      Line l = get(i);
-      l.draw(canvas, paint, Color.BLACK);
+    for (Line l: this) {
+      l.draw(canvas, paint, color, this);
     }
   }
 
   @Override
   public void save()
   {
-    for (GeoPoint p : pointSet) {
+    for (GeoPoint p : geoPoints) {
       new SendLocation(getName(), p.timestamp, p.lon, p.lat);
       try {
         Thread.sleep(1000);

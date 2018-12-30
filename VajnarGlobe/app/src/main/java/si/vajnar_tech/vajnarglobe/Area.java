@@ -10,9 +10,20 @@ import java.util.Comparator;
 abstract class Area extends ArrayList<Line>
 {
   private String areaName;
-  GeoPoint min;
-  ArrayList<GeoPoint> pointSet = new ArrayList<>();
-  ArrayList<Point> points = new ArrayList<>();
+  Point min;
+  ArrayList<GeoPoint> geoPoints = new ArrayList<>();
+  private ArrayList<Point> points = new ArrayList<>();
+
+  Area(String name, ArrayList<GeoPoint> p)
+  {
+    areaName = name;
+    geoPoints.addAll(p);
+    _sortPoints(geoPoints);
+    for (GeoPoint point : geoPoints)
+      points.add(new Point(point.lon, point.lat));
+    min = min(points);
+    min = transform(min, false);
+  }
 
   Area(String name)
   {
@@ -21,18 +32,15 @@ abstract class Area extends ArrayList<Line>
 
   Area constructArea()
   {
-    _sortPoints();
-    for (GeoPoint p : pointSet)
-      points.add(new Point(p.lon, p.lat));
     for (int i = 0; i < points.size() - 1; i++)
       add(new Line(points.get(i), points.get(i + 1)));
     add(new Line(points.get(points.size() - 1), points.get(0)));
     return this;
   }
 
-  private void _sortPoints()
+  private void _sortPoints(ArrayList<GeoPoint> p)
   {
-    Collections.sort(pointSet, new Comparator<GeoPoint>()
+    Collections.sort(p, new Comparator<GeoPoint>()
     {
       @Override
       public int compare(GeoPoint o1, GeoPoint o2)
@@ -60,10 +68,10 @@ abstract class Area extends ArrayList<Line>
     int     i;
 
     for (i = 0; i < size(); i++) {
-      float iy = get(i).p1.y;
-      float ix = get(i).p1.x;
-      float jy = get(j).p1.y;
-      float jx = get(j).p1.x;
+      double iy = get(i).p1.y;
+      double ix = get(i).p1.x;
+      double jy = get(j).p1.y;
+      double jx = get(j).p1.x;
       if ((iy < p.y && jy >= p.y || jy < p.y && iy >= p.y) && (ix <= p.x || jx <= p.x))
         if (ix + (p.y - iy) / (jy - iy) * (jx - ix) < p.x)
           oddNodes = !oddNodes;
@@ -89,4 +97,18 @@ abstract class Area extends ArrayList<Line>
   }
 
   protected abstract void save();
+
+  protected abstract Point transform(Point p, boolean norm);
+
+  private Point min(ArrayList<Point> points)
+  {
+    Point res = new Point(points.get(0).x, points.get(0).y);
+    for (Point o : points) {
+      if (o.x < res.x)
+        res.x = o.x;
+      if (o.y < res.y)
+        res.y = o.y;
+    }
+    return res;
+  }
 }
