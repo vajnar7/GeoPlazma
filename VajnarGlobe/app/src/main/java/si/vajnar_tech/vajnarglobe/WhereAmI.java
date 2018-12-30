@@ -86,7 +86,7 @@ public class WhereAmI extends GPS
       Line approx = new Line(startPoint, currentPosition);
       if (approx.f.isInvalid)
         continue;
-      approx.draw(canvas, paint, Color.RED, area);
+      approx.draw(canvas, paint, Color.RED);
 
 
       Point predictor = approx.intersection(area.get(i));

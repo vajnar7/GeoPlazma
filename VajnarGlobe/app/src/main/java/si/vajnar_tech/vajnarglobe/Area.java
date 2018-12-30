@@ -12,6 +12,7 @@ abstract class Area extends ArrayList<Line>
   private String areaName;
   GeoPoint min;
   ArrayList<GeoPoint> pointSet = new ArrayList<>();
+  ArrayList<Point> points = new ArrayList<>();
 
   Area(String name)
   {
@@ -21,7 +22,6 @@ abstract class Area extends ArrayList<Line>
   Area constructArea()
   {
     _sortPoints();
-    ArrayList<Point> points = new ArrayList<>();
     for (GeoPoint p : pointSet)
       points.add(new Point(p.lon, p.lat));
     for (int i = 0; i < points.size() - 1; i++)
