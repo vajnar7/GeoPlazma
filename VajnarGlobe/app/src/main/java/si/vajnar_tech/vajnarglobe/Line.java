@@ -2,9 +2,6 @@ package si.vajnar_tech.vajnarglobe;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.util.Log;
-
-import java.util.LinkedList;
 
 class Line
 {
@@ -152,8 +149,6 @@ class LinearFun extends  F<Double>
   {
     double a = p2.y - p1.y; // if 0 horizontal
     double b = p2.x - p1.x; // if 0 vertical
-    // Log.i("IZAA", "b=" + b);
-    // Log.i("IZAA", "p2=" + p2);
 
     if (a == 0 && b != 0) {
       k = p2.x > p1.x ? 1 : -1;
@@ -167,8 +162,6 @@ class LinearFun extends  F<Double>
       k = a / b;
       n = p1.y - (k * p1.x);
     }
-
-//    Log.i("IZAA", "utrirac kupa=" + k);
   }
 
   @Override

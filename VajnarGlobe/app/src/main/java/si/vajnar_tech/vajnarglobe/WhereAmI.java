@@ -6,10 +6,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.location.Location;
 import android.util.Log;
-import android.util.LongSparseArray;
-
 import java.util.ArrayList;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @SuppressWarnings("InfiniteLoopStatement")
 @SuppressLint("ViewConstructor")
@@ -28,6 +25,7 @@ public class WhereAmI extends GPS
   Long erste = null;
 
   Point currentPosition = null;
+  long currentTime;
 
   VectorField H = new VectorField()
   {
@@ -54,13 +52,13 @@ public class WhereAmI extends GPS
 
   private void _hector(Vector point)
   {
-    long t = System.currentTimeMillis();
+    currentTime = System.currentTimeMillis();
     dv = new D();
-    fs.put(t, point);
+    fs.put(currentTime, point);
     ds._up(point);
-    dt._up(t);
+    dt._up(currentTime);
     dv._is(ds._po(dt));
-    fv.put(t, dv);
+    fv.put(currentTime, dv);
     currentPosition = point.toPoint();
     ctx.runOnUiThread(new Runnable()
     {
@@ -83,25 +81,6 @@ public class WhereAmI extends GPS
       _drawArea(a, canvas);
   }
 
-  private void _foza()
-  {
-//    TODO:
-//    paint.setColor(Color.parseColor("#CD5C5C"));
-//    LongSparseArray<Vector> V = fs.f();
-//    for (int i = 0; i < V.size() - 1; i++)
-//      canvas.drawLine((float) V.get(V.keyAt(i)).x, (float) V.get(V.keyAt(i)).y,
-//                      (float) V.get(V.keyAt(i) + 1).x, (float) V.get(V.keyAt(i) + 1).y, paint);
-  }
-
-  //TODO: predict position
-  private Line _predictor(Point startPoint)
-  {
-    Line approx = new Line(startPoint, currentPosition);
-    if (approx.f.isInvalid)
-      return null;
-    return approx;
-  }
-
   private void _drawArea(Area area, Canvas canvas)
   {
     area.draw(canvas, paint, Color.BLACK);
@@ -119,30 +98,31 @@ public class WhereAmI extends GPS
 
       Point startPoint = fs.f(erste).toPoint();
       startPoint.draw(canvas, paint, Color.BLUE, area);
-      new Line(startPoint, currentPosition).draw(canvas, paint, Color.CYAN, area);
+      Line approx = new Line(startPoint, currentPosition);
+      fs.f(currentTime + 1000).toPoint().draw(canvas, paint, Color.MAGENTA, 2, area);
 
-      fs.f(System.currentTimeMillis() + 1000).toPoint().draw(canvas, paint, Color.MAGENTA, 2, area);
-
-//      Line approx = _predictor(startPoint);
-//      if (approx == null)
-//        continue;
-//      approx.draw(canvas, paint, Color.RED, area);
-//
-//      Point predictor = approx.intersection(area.get(i));
-//      if (predictor != null && area.get(i).onMe(predictor))
-//        predictor.draw(canvas, paint, Color.MAGENTA, 5, area);
-//      else
-//        continue;
-//
-//      Vector ttt = new Vector(predictor.x, predictor.y);
-//      Vector ccc = new Vector(currentPosition.x, currentPosition.y);
-//      Vector qqq = ttt._minus(ccc);
-//      //Log.i("IZAA", "vektor razdalje do=" + qqq);
-//      Vector sume = fv.integral();
-//      Vector time = new Vector(Math.abs(qqq.x / sume.x), Math.abs(qqq.y / sume.y));
-//      //Log.i("IZAA", "vektor casa=" + time);
-//      Log.i("IZAAA", String.format("do meje %d bos prisel cez ", i) + (time.x + time.y) + " sekund");
+      _predict(approx, canvas, area, i);
     }
+  }
+
+  private void _predict(Line approx, Canvas canvas, Area area, int i)
+  {
+    approx.draw(canvas, paint, Color.RED, area);
+
+    Point predictor = approx.intersection(area.get(i));
+    if (predictor != null && area.get(i).onMe(predictor))
+      predictor.draw(canvas, paint, Color.MAGENTA, 5, area);
+    else
+      return;
+
+    Vector ttt = new Vector(predictor.x, predictor.y);
+    Vector ccc = new Vector(currentPosition.x, currentPosition.y);
+    Vector qqq = ttt._minus(ccc);
+    //Log.i("IZAA", "vektor razdalje do=" + qqq);
+    Vector sume = fv.integral();
+    Vector time = new Vector(Math.abs(qqq.x / sume.x), Math.abs(qqq.y / sume.y));
+    //Log.i("IZAA", "vektor casa=" + time);
+    Log.i("IZAAA", String.format("do meje %d bos prisel cez ", i) + (time.x + time.y) / 1000 + " sekund");
   }
 }
 
@@ -166,7 +146,13 @@ class Function extends F<Vector>
 
   @Override Vector integral()
   {
-    return null;
+    Vector sum = new Vector();
+    for (int i = 0; i < size(); i++)
+    {
+      sum._plus_je(get(keyAt(i)));
+    }
+    sum._deljeno_je(new Vector(size(), size()));
+    return sum;
   }
 
   @Override
@@ -176,8 +162,6 @@ class Function extends F<Vector>
     if (size() > 2) {
       long k0 = keyAt(0);
       long kn = keyAt(size()-1);
-      //Log.i("IZAA", "k0=" + k0);
-      //Log.i("IZAA", "kn=" + kn);
 
       Point p11 = new Point(k0, get(k0).x);
       Point p12 = new Point(kn, get(kn).x);
@@ -185,6 +169,13 @@ class Function extends F<Vector>
       Point p22 = new Point(kn, get(kn).y);
       fun = new F_V<>(new LinearFun(p11, p12), new LinearFun(p21, p22));
     }
+  }
+
+  void draw(Canvas c, Paint paint, int color, Area area)
+  {
+    if (size() > 1)
+      for (int i = 0; i < size() - 1; i++)
+        new Line(get(keyAt(i)).toPoint(), get(keyAt(i+1)).toPoint()).draw(c, paint, color, area);
   }
 }
 
