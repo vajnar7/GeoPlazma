@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
       new GetAreas(new Runnable() {
         @Override public void run()
         {
+          C.startTestGPSService(act);
           gpsService.invalidate();
         }
       });

@@ -5,13 +5,19 @@ public class Vector
   protected double x;
   protected double y;
 
-  int s;
+  long s;
 
   Vector()
   {
     this.x = 0;
     this.y = 0;
     this.s = 0;
+  }
+
+  Vector(Vector b)
+  {
+    this.x = b.x;
+    this.y = b.y;
   }
 
   Vector(double x, double y)

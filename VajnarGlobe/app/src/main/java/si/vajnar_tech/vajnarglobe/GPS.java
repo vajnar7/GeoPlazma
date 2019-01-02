@@ -20,12 +20,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 public abstract class GPS extends View implements LocationListener
 {
   private static final String TAG              = "IZAA-GPS";
-  private static final double DEF_LONGITUDE    = 122;  //x
-  private static final double DEF_LATITUDE     = 36;   //y
+  private static final double DEF_LONGITUDE    = 13.825343132019043;  //x
+  private static final double DEF_LATITUDE     = 46.486331939697266;  //y
 
   protected double latitude;
   protected double longitude;
-  protected AtomicInteger currentTime = new AtomicInteger(0);
   protected MainActivity ctx;
   public boolean gotLocation = false;
 
@@ -74,9 +73,9 @@ public abstract class GPS extends View implements LocationListener
            }).create()).show();
       return;
     }
-    // TODO: nastavi up-time in ms and up-distance in meters
-    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 2, this);
-    Toast.makeText(ctx, "GPS granted", Toast.LENGTH_SHORT).show();
+
+//    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+//    Toast.makeText(ctx, "GPS granted", Toast.LENGTH_SHORT).show();
   }
 
   @Override
@@ -85,7 +84,7 @@ public abstract class GPS extends View implements LocationListener
     latitude = location.getLatitude();
     longitude = location.getLongitude();
     gotLocation = true;
-    notifyMe(new Vector(longitude, latitude), currentTime.incrementAndGet());
+    notifyMe(new Vector(longitude, latitude));
     notifyMe(location);
   }
 
@@ -101,7 +100,7 @@ public abstract class GPS extends View implements LocationListener
   public void onProviderDisabled(String s)
   {}
 
-  protected abstract void notifyMe(Vector point, int timestamp);
+  protected abstract void notifyMe(Vector point);
 
   protected abstract void notifyMe(Location loc);
 }

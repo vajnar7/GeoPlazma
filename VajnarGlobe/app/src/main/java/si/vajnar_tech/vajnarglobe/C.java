@@ -22,8 +22,8 @@ public class C
     // test parameters
     final int      min  = 5;
     final int      max  = 25;
-    final int      minT = 5;
-    final int      maxT = 10;
+    final int      minT = 1;
+    final int      maxT = 3;
     final Location loc  = new Location("");
     new Thread(new Runnable()
     {
@@ -32,8 +32,8 @@ public class C
         Random r = new Random();
         while (true) {
           int t = r.nextInt(maxT - minT) + minT;
-          loc.setLatitude(act.gpsService.latitude + r.nextInt(max - min) + min);
-          loc.setLongitude(act.gpsService.longitude + r.nextInt(max - min) + min);
+          loc.setLatitude(act.gpsService.latitude - 0.000013);
+          loc.setLongitude(act.gpsService.longitude + 0.0000005);
           act.gpsService.onLocationChanged(loc);
           try {
             Thread.sleep(t * 1000);

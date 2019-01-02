@@ -4,7 +4,7 @@ class D extends Vector
 {
   private double q_x;
   private double q_y;
-  private int q_s;
+  private long q_s;
 
   D()
   {
@@ -12,7 +12,7 @@ class D extends Vector
     q_y = 0;
   }
 
-  void _up(int scalar)
+  void _up(long scalar)
   {
     s = scalar - q_s;
     q_s = scalar;

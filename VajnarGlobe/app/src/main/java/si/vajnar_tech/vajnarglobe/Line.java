@@ -2,6 +2,9 @@ package si.vajnar_tech.vajnarglobe;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.util.Log;
+
+import java.util.LinkedList;
 
 class Line
 {
@@ -133,5 +136,56 @@ class Line
   public String toString()
   {
     return ("[" + p1 + "," + p2 + "]");
+  }
+}
+
+@SuppressWarnings("WeakerAccess")
+class LinearFun extends  F<Double>
+{
+  boolean isHorizontal = false;
+  boolean isVertical   = false;
+  boolean isInvalid    = false;
+  double k = 0;
+  double n = 0;
+
+  LinearFun(Point p1, Point p2)
+  {
+    double a = p2.y - p1.y; // if 0 horizontal
+    double b = p2.x - p1.x; // if 0 vertical
+    // Log.i("IZAA", "b=" + b);
+    // Log.i("IZAA", "p2=" + p2);
+
+    if (a == 0 && b != 0) {
+      k = p2.x > p1.x ? 1 : -1;
+      isHorizontal = true;
+    } else if (a != 0 && b == 0) {
+      k = p2.y > p1.y ? 1 : -1;
+      isVertical = true;
+    } else if (a == 0)
+      isInvalid = true;
+    else {
+      k = a / b;
+      n = p1.y - (k * p1.x);
+    }
+
+//    Log.i("IZAA", "utrirac kupa=" + k);
+  }
+
+  @Override
+  Double f(long t)
+  {
+    return k*t + n;
+  }
+
+  @Override
+  Double f(String s)
+  {
+    return null;
+  }
+
+  @Override
+  Double integral()
+  {
+    return null;
   }
 }

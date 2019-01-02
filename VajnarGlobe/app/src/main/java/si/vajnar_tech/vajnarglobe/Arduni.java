@@ -15,7 +15,7 @@ public class Arduni extends GPS
     act = ctx;
   }
 
-  @Override protected void notifyMe(Vector point, int timestamp)
+  @Override protected void notifyMe(Vector point)
   {
   }
 
