@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.location.Location;
 import android.util.Log;
+
 import java.util.ArrayList;
 
 @SuppressWarnings("InfiniteLoopStatement")
@@ -19,11 +20,8 @@ public class WhereAmI extends GPS
   Function fs    = new Function();
   D        ds    = new D();
   D        dt    = new D();
-
   D dv;
-
-  Long erste = null;
-
+  Long firstTime = null;
   Point currentPosition = null;
   long currentTime;
 
@@ -32,8 +30,8 @@ public class WhereAmI extends GPS
     @Override
     void done(Vector v)
     {
-      if (erste == null)
-        erste = System.currentTimeMillis();
+      if (firstTime == null)
+        firstTime = System.currentTimeMillis();
       _hector(v);
     }
   };
@@ -96,7 +94,7 @@ public class WhereAmI extends GPS
       if (area.get(i).onMe(p))
         p.draw(canvas, paint, Color.GREEN, area);
 
-      Point startPoint = fs.f(erste).toPoint();
+      Point startPoint = fs.f(firstTime).toPoint();
       startPoint.draw(canvas, paint, Color.BLUE, area);
       Line approx = new Line(startPoint, currentPosition);
       fs.f(currentTime + 1000).toPoint().draw(canvas, paint, Color.MAGENTA, 2, area);
@@ -147,8 +145,7 @@ class Function extends F<Vector>
   @Override Vector integral()
   {
     Vector sum = new Vector();
-    for (int i = 0; i < size(); i++)
-    {
+    for (int i = 0; i < size(); i++) {
       sum._plus_je(get(keyAt(i)));
     }
     sum._deljeno_je(new Vector(size(), size()));
@@ -161,7 +158,7 @@ class Function extends F<Vector>
     super.put(key, value);
     if (size() > 2) {
       long k0 = keyAt(0);
-      long kn = keyAt(size()-1);
+      long kn = keyAt(size() - 1);
 
       Point p11 = new Point(k0, get(k0).x);
       Point p12 = new Point(kn, get(kn).x);
@@ -175,7 +172,7 @@ class Function extends F<Vector>
   {
     if (size() > 1)
       for (int i = 0; i < size() - 1; i++)
-        new Line(get(keyAt(i)).toPoint(), get(keyAt(i+1)).toPoint()).draw(c, paint, color, area);
+        new Line(get(keyAt(i)).toPoint(), get(keyAt(i + 1)).toPoint()).draw(c, paint, color, area);
   }
 }
 
