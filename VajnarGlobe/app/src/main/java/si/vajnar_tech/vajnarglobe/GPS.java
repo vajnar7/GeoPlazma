@@ -15,6 +15,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import static si.vajnar_tech.vajnarglobe.C.Parameters.minDist;
+import static si.vajnar_tech.vajnarglobe.C.Parameters.minTime;
+
 public abstract class GPS extends View implements LocationListener
 {
   private static final String TAG              = "IZAA-GPS";
@@ -72,7 +75,7 @@ public abstract class GPS extends View implements LocationListener
       return;
     }
 
-    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, minTime, minDist, this);
     Toast.makeText(ctx, "GPS granted", Toast.LENGTH_SHORT).show();
   }
 

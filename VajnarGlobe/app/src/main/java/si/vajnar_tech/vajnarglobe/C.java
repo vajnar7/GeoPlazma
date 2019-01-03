@@ -9,13 +9,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class C
 {
   // operation Mode
-  public static String mode = "track";
+  public static String                 mode  = "track";
   // DB of areas
-  public static HashMap<String, Area> areas = new HashMap<>();
+  public static HashMap<String, Area>  areas = new HashMap<>();
   // timestamper
-  public static AtomicInteger         stamp = new AtomicInteger(1);
+  public static AtomicInteger          stamp = new AtomicInteger(1);
   // screen dimensions
-  public static android.graphics.Point size = new android.graphics.Point();
+  public static android.graphics.Point size  = new android.graphics.Point();
 
   public static void startTestGPSService(final MainActivity act)
   {
@@ -44,5 +44,15 @@ public class C
         }
       }
     }).start();
+  }
+
+  // parameters
+  public static class Parameters
+  {
+    static final int           n       = 3;    // get 3 points to determine current position
+    static final AtomicInteger lim     = new AtomicInteger(35);
+    static final int           minTime = 0;    // ms
+    static final float         minDist = 0.0f; // m
+    static final int           ZZ      = 3;    // 3 points back from current
   }
 }
