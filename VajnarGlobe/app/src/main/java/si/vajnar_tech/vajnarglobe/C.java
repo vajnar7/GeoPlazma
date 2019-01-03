@@ -20,10 +20,10 @@ public class C
   public static void startTestGPSService(final MainActivity act)
   {
     // test parameters
-    final int      min  = 5;
-    final int      max  = 25;
     final int      minT = 1;
     final int      maxT = 3;
+    final double   offX = 0.000015;
+    final double   offY = -0.000013;
     final Location loc  = new Location("");
     new Thread(new Runnable()
     {
@@ -32,8 +32,8 @@ public class C
         Random r = new Random();
         while (true) {
           int t = r.nextInt(maxT - minT) + minT;
-          loc.setLatitude(act.gpsService.latitude - 0.000013);
-          loc.setLongitude(act.gpsService.longitude + 0.0000005);
+          loc.setLatitude(act.gpsService.latitude + offY);
+          loc.setLongitude(act.gpsService.longitude + offX);
           act.gpsService.onLocationChanged(loc);
           try {
             Thread.sleep(t * 1000);
