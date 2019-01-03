@@ -45,6 +45,7 @@ public class WhereAmI extends GPS
   @Override
   protected void notifyMe(Vector point)
   {
+    Log.i("IZAA", "prdc=" + point);
     H.add(point);
   }
 
@@ -94,7 +95,10 @@ public class WhereAmI extends GPS
       if (area.get(i).onMe(p))
         p.draw(canvas, paint, Color.GREEN, area);
 
-      Point startPoint = fs.f(firstTime).toPoint();
+      Vector sp = fs.f(firstTime);
+      if (sp == null)
+        continue;
+      Point startPoint = sp.toPoint();
       startPoint.draw(canvas, paint, Color.BLUE, area);
       Line approx = new Line(startPoint, currentPosition);
       fs.f(currentTime + 1000).toPoint().draw(canvas, paint, Color.MAGENTA, 2, area);
@@ -116,10 +120,8 @@ public class WhereAmI extends GPS
     Vector ttt = new Vector(predictor.x, predictor.y);
     Vector ccc = new Vector(currentPosition.x, currentPosition.y);
     Vector qqq = ttt._minus(ccc);
-    //Log.i("IZAA", "vektor razdalje do=" + qqq);
     Vector sume = fv.integral();
     Vector time = new Vector(Math.abs(qqq.x / sume.x), Math.abs(qqq.y / sume.y));
-    //Log.i("IZAA", "vektor casa=" + time);
     Log.i("IZAAA", String.format("do meje %d bos prisel cez ", i) + (time.x + time.y) / 1000 + " sekund");
   }
 }
@@ -132,7 +134,7 @@ class Function extends F<Vector>
   @Override
   Vector f(long t)
   {
-    if (size() < 2)
+    if (size() < 2 || fun == null)
       return null;
     return new Vector(fun.f1.f(t), fun.f2.f(t));
   }

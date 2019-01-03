@@ -5,9 +5,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public abstract class VectorField extends ArrayList<Vector>
 {
-  private static final int n = 1;
-//  private static final AtomicInteger lim = new AtomicInteger(35);
-  private static final AtomicInteger lim = new AtomicInteger(1);
+  private static final int n = 7;
+  private static final AtomicInteger lim = new AtomicInteger(35);
 
   @Override
   public boolean add(Vector v)

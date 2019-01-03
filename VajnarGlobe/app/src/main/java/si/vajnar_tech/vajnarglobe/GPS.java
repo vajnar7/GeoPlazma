@@ -15,13 +15,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 public abstract class GPS extends View implements LocationListener
 {
   private static final String TAG              = "IZAA-GPS";
-  private static final double DEF_LONGITUDE    = 13.825343132019043;  //x
-  private static final double DEF_LATITUDE     = 46.486331939697266;  //y
+  private static final double DEF_LONGITUDE    = 13.82535063201905;  //x
+  private static final double DEF_LATITUDE     = 46.486136939697225;  //y
 
   protected double latitude;
   protected double longitude;
@@ -74,8 +72,8 @@ public abstract class GPS extends View implements LocationListener
       return;
     }
 
-//    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
-//    Toast.makeText(ctx, "GPS granted", Toast.LENGTH_SHORT).show();
+    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+    Toast.makeText(ctx, "GPS granted", Toast.LENGTH_SHORT).show();
   }
 
   @Override
