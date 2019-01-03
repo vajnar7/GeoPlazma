@@ -15,13 +15,14 @@ public class WhereAmI extends GPS
 {
   MainActivity act;
 
+
   Paint    paint = new Paint();
   Function fv    = new Function();
   Function fs    = new Function();
   D        ds    = new D();
   D        dt    = new D();
   D dv;
-  Long firstTime = null;
+  Long previousTime = null;
   Point currentPosition = null;
   long currentTime;
 
@@ -30,8 +31,6 @@ public class WhereAmI extends GPS
     @Override
     void done(Vector v)
     {
-      if (firstTime == null)
-        firstTime = System.currentTimeMillis();
       _hector(v);
     }
   };
@@ -51,6 +50,7 @@ public class WhereAmI extends GPS
 
   private void _hector(Vector point)
   {
+    previousTime = currentTime;
     currentTime = System.currentTimeMillis();
     dv = new D();
     fs.put(currentTime, point);
@@ -95,13 +95,16 @@ public class WhereAmI extends GPS
       if (area.get(i).onMe(p))
         p.draw(canvas, paint, Color.GREEN, area);
 
-      Vector sp = fs.f(firstTime);
+      if (previousTime == null)
+        continue;
+
+      Vector sp = fs.f(previousTime);
       if (sp == null)
         continue;
       Point startPoint = sp.toPoint();
       startPoint.draw(canvas, paint, Color.BLUE, area);
       Line approx = new Line(startPoint, currentPosition);
-      fs.f(currentTime + 1000).toPoint().draw(canvas, paint, Color.MAGENTA, 2, area);
+      fs.f(currentTime + 2000).toPoint().draw(canvas, paint, Color.MAGENTA, 3, area);
 
       _predict(approx, canvas, area, i);
     }
