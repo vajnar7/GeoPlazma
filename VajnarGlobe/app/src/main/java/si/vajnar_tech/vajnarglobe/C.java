@@ -20,10 +20,10 @@ public class C
   public static void startTestGPSService(final MainActivity act)
   {
     // test parameters
+    final int      min = 5;
+    final int      max = 13;
     final int      minT = 1;
     final int      maxT = 3;
-    final double   offX = 0.000015;
-    final double   offY = -0.000013;
     final Location loc  = new Location("");
     new Thread(new Runnable()
     {
@@ -32,6 +32,10 @@ public class C
         Random r = new Random();
         while (true) {
           int t = r.nextInt(maxT - minT) + minT;
+          int rx = r.nextInt(max - min) + min;
+          int ry = r.nextInt(max - min) + min;
+          double offX = (double) rx / 1000000.0;
+          double offY = -(double) ry / 1000000.0;
           loc.setLatitude(act.gpsService.latitude + offY);
           loc.setLongitude(act.gpsService.longitude + offX);
           act.gpsService.onLocationChanged(loc);
@@ -49,10 +53,12 @@ public class C
   // parameters
   public static class Parameters
   {
-    static final int           n       = 3;    // get 3 points to determine current position
-    static final AtomicInteger lim     = new AtomicInteger(35);
-    static final int           minTime = 0;    // ms
-    static final float         minDist = 0.0f; // m
-    static final int           ZZ      = 3;    // 3 points back from current
+    // approximation
+    static final int           n       = 1;    // get ~ points to determine current position
+    // 35 is this value if min Time and minDist are zero.
+    static final AtomicInteger lim     = new AtomicInteger(1);
+    static final int           minTime = 100;    // ms
+    static final float         minDist = 0.5f; // m
+    static final int           ZZ      = 3;    // ~ points back from current
   }
 }
