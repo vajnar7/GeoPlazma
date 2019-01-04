@@ -81,6 +81,7 @@ public class WhereAmI extends GPS
 
   private void _drawArea(Area area, Canvas canvas)
   {
+    fs.draw(canvas, paint, Color.GRAY, area);
     area.draw(canvas, paint, Color.BLACK);
     if (currentPosition == null)
       return;
@@ -99,9 +100,7 @@ public class WhereAmI extends GPS
         continue;
       Point startPoint = sp.toPoint();
       startPoint.draw(canvas, paint, Color.BLUE, area);
-      new Line(startPoint, currentPosition).draw(canvas, paint, Color.RED, area);
-
-      //_predict(startPoint, canvas, area, i);
+      _predict(startPoint, canvas, area, i);
     }
   }
 
