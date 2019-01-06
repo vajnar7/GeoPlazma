@@ -6,9 +6,13 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.location.Location;
 import android.util.Log;
+
 import java.util.ArrayList;
 
 import static si.vajnar_tech.vajnarglobe.C.Parameters.ZZ;
+import static si.vajnar_tech.vajnarglobe.C.scale;
+import static si.vajnar_tech.vajnarglobe.C.xOffset;
+import static si.vajnar_tech.vajnarglobe.C.yOffset;
 
 @SuppressWarnings("InfiniteLoopStatement")
 @SuppressLint("ViewConstructor")
@@ -16,7 +20,7 @@ public class WhereAmI extends GPS
 {
   MainActivity act;
 
-
+  boolean  ready = false;
   Paint    paint = new Paint();
   Function fv    = new Function();
   Function fs    = new Function();
@@ -24,6 +28,7 @@ public class WhereAmI extends GPS
   D        dt    = new D();
   D dv;
   Point currentPosition = null;
+  Point aproxPosition   = null;
   long currentTime;
 
   VectorField H = new VectorField()
@@ -35,16 +40,37 @@ public class WhereAmI extends GPS
     }
   };
 
+  Aproximator A = new Aproximator(1)
+  {
+    @Override void go()
+    {
+      if (fs != null) {
+        Vector r = fs.f(System.currentTimeMillis());
+        if (r == null)
+          return;
+        aproxPosition = r.toPoint();
+        ctx.runOnUiThread(new Runnable()
+        {
+          @Override public void run()
+          {
+            invalidate();
+          }
+        });
+      }
+
+    }
+  };
+
   WhereAmI(MainActivity ctx)
   {
     super(ctx);
     act = ctx;
+    A.start();
   }
 
   @Override
   protected void notifyMe(Vector point)
   {
-    Log.i("IZAA", "prdc=" + point);
     H.add(point);
   }
 
@@ -67,14 +93,30 @@ public class WhereAmI extends GPS
     });
   }
 
-  @Override protected void notifyMe(Location loc)
+  @Override
+  protected void notifyMe(Location loc)
   {
+    Location currentLocation = new Location(loc);
+    xOffset = new Normal(currentLocation.getLongitude(), 3).value();
+    yOffset = new Normal(currentLocation.getLatitude(), 2).value();
+    if (!ready) {
+      new GetAreas(new Runnable()
+      {
+        @Override public void run()
+        {
+          act.gpsService.invalidate();
+        }
+      });
+      ready = true;
+    }
   }
 
   @Override
   protected void onDraw(Canvas canvas)
   {
     super.onDraw(canvas);
+    if (!ready)
+      return;
     for (Area a : C.areas.values())
       _drawArea(a, canvas);
   }
@@ -83,6 +125,8 @@ public class WhereAmI extends GPS
   {
     fs.draw(canvas, paint, Color.GRAY, area);
     area.draw(canvas, paint, Color.BLACK);
+    if (aproxPosition != null)
+      aproxPosition.draw(canvas, paint, Color.GREEN, area);
     if (currentPosition == null)
       return;
     currentPosition.draw(canvas, paint, Color.RED, area);
@@ -150,7 +194,8 @@ class Function extends F<Vector>
     return null;
   }
 
-  @Override Vector integral()
+  @Override
+  Vector integral()
   {
     Vector sum = new Vector();
     for (int i = 0; i < size(); i++) {
@@ -181,6 +226,36 @@ class Function extends F<Vector>
     if (size() > 1)
       for (int i = 0; i < size() - 1; i++)
         new Line(get(keyAt(i)).toPoint(), get(keyAt(i + 1)).toPoint()).draw(c, paint, color, area);
+  }
+}
+
+class Normal
+{
+  private int res;
+
+  Normal(double a1, double a2)
+  {
+    int    diff = 0;
+    double b1   = a1;
+    double b2   = a2;
+    for (int i = 0; i < 10 && diff == 0; i++) {
+      diff = Math.abs((int) b1 - (int) b2);
+      b1 *= 10.0;
+      b2 *= 10.0;
+    }
+    res = (int) b1;
+  }
+
+  Normal(double a1, int spoo)
+  {
+    int q = scale - spoo;
+    res = (int) (a1 * Math.pow(10, q));
+    res *= Math.pow(10, spoo);
+  }
+
+  public int value()
+  {
+    return res;
   }
 }
 
