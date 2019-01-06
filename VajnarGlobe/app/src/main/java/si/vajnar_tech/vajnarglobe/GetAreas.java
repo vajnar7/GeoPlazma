@@ -1,10 +1,6 @@
 package si.vajnar_tech.vajnarglobe;
 
-import android.util.Log;
-import android.view.Display;
-
 import java.util.ArrayList;
-
 import static si.vajnar_tech.vajnarglobe.Login.GET_ALL;
 
 public class GetAreas extends REST<AreaQ>

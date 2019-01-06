@@ -1,11 +1,14 @@
 package si.vajnar_tech.vajnarglobe;
 
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.Log;
 
 import java.util.ArrayList;
+
+import static si.vajnar_tech.vajnarglobe.C.scale;
+import static si.vajnar_tech.vajnarglobe.C.xOffset;
+import static si.vajnar_tech.vajnarglobe.C.yOffset;
 
 public class Place extends Area
 {
@@ -22,14 +25,11 @@ public class Place extends Area
   @Override
   protected Point transform(Point p, boolean norm)
   {
-    int scale = 1000000;
-    int xOffset = 13825;
-    int yOffset = 4648;
     Point res = new Point(p.x, p.y);
-    res.x *= scale;
-    res.x -= (xOffset * 1000);
-    res.y *= scale;
-    res.y -= (yOffset * 10000);
+    res.x *= Math.pow(10, scale);
+    res.x -= xOffset;
+    res.y *= Math.pow(10, scale);
+    res.y -= yOffset;
     if (norm) {
       res.x -= min.x;
       res.y -= min.y;

@@ -45,13 +45,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
       setContentView(gpsService);
       Display display = getWindowManager().getDefaultDisplay();
       display.getSize(C.size);
-      final MainActivity act = this;
-      new GetAreas(new Runnable() {
-        @Override public void run()
-        {
-          gpsService.invalidate();
-        }
-      });
     }
   }
 

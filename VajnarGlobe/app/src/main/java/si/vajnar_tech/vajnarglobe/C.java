@@ -8,6 +8,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class C
 {
+  // scale i power of 10
+  static int scale = 6;
+  // offsets
+  static Integer xOffset = null;
+  static Integer yOffset = null;
   // operation Mode
   public static String                 mode  = "track";
   // DB of areas
