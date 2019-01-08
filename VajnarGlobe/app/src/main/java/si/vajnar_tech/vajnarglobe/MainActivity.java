@@ -3,80 +3,58 @@ package si.vajnar_tech.vajnarglobe;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Display;
 import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
-@SuppressWarnings({"FieldCanBeLocal", "ConstantConditions"})
-public class MainActivity extends AppCompatActivity implements View.OnClickListener
+public class MainActivity extends AppCompatActivity
 {
-  private final String TAG = "IZAA-MAIN";
+  CurrentArea currentArea     = null;
+  MyFragment  currentFragment = null;
 
-  WhereAmI gpsService;
-  Arduni   arduni;
-  CurrentArea currentArea = null;
-
+  @SuppressLint("InflateParams")
   @Override
   protected void onCreate(Bundle savedInstanceState)
   {
     super.onCreate(savedInstanceState);
-    switch (C.mode) {
-    case "capture":
-      arduni = new Arduni(this);
-      LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-      assert inflater != null;
-      @SuppressLint("InflateParams")
-      LinearLayout root = (LinearLayout) inflater.inflate(R.layout.activity_main, null);
 
-      setContentView(root);
-
-      findViewById(R.id.send).setOnClickListener(this);
-      findViewById(R.id.construct).setOnClickListener(this);
-      currentArea = new CurrentArea("Test1");
-
-      printLocation();
-      break;
-    case "track":
-      gpsService = new WhereAmI(this);
-      setContentView(gpsService);
-      Display display = getWindowManager().getDefaultDisplay();
-      display.getSize(C.size);
-    }
+    LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    assert inflater != null;
+    setContentView(inflater.inflate(R.layout.content_main, null));
+    Display display = getWindowManager().getDefaultDisplay();
+    display.getSize(C.size);
+    setFragment("main", FragmentMain.class, new Bundle());
   }
 
-  public void printLocation()
+  public void setFragment(String tag, Class<? extends MyFragment> cls, Bundle params)
   {
-    TextView latitudeT  = findViewById(R.id.latitude);
-    TextView longitudeT = findViewById(R.id.longitude);
-    String   lonS       = "Longitude:";
-    String   latS       = "Latitude";
-    latitudeT.setText(latS);
-    longitudeT.setText(lonS);
-    if (arduni.gotLocation) {
-      latS += arduni.location.getLatitude();
-      lonS += arduni.location.getLongitude();
-      latitudeT.setText(latS);
-      longitudeT.setText(lonS);
-    }
+    currentFragment = createFragment(tag, cls, params);
+    if (currentFragment == null) return;
+
+    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+    transaction.replace(R.id.container, currentFragment);
+    transaction.addToBackStack(null);
+    transaction.commit();
   }
 
-  @Override
-  public void onClick(View v)
+  public MyFragment createFragment(String tag, Class<? extends MyFragment> cls, Bundle params)
   {
-    switch (v.getId()) {
-    case R.id.send:
-      if (arduni.gotLocation) {
-        currentArea.mark(new GeoPoint(arduni.location.getLongitude(), arduni.location.getLatitude()));
-        Toast.makeText(this, "Sent", Toast.LENGTH_SHORT).show();
+    MyFragment frag;
+    frag = (MyFragment) getSupportFragmentManager().findFragmentByTag(tag);
+    if (frag == null && cls != null)
+      try {
+        frag = MyFragment.instantiate(cls, this);
+        frag.setArguments(params);
+      } catch (Exception e) {
+        e.printStackTrace();
+        return null;
       }
-      break;
-    case R.id.construct:
-      if (currentArea != null)
-        currentArea.constructArea();
-    }
+    return frag;
+  }
+
+  public MyFragment getCurrentFragment()
+  {
+    return currentFragment;
   }
 }

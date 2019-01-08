@@ -8,9 +8,18 @@ import android.view.ViewGroup;
 
 public class F_Track extends MyFragment
 {
+  WhereAmI gps;
+
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
   {
-    return act.gpsService;
+    init();
+    return gps;
+  }
+
+  @Override
+  protected void init()
+  {
+    gps = new WhereAmI(act);
   }
 }

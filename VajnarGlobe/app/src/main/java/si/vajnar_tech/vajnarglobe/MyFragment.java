@@ -2,7 +2,7 @@ package si.vajnar_tech.vajnarglobe;
 
 import android.support.v4.app.DialogFragment;
 
-public class MyFragment extends DialogFragment
+public abstract class MyFragment extends DialogFragment
 {
   MainActivity act;
 
@@ -17,4 +17,6 @@ public class MyFragment extends DialogFragment
     }
     return res;
   }
+
+  protected abstract void init();
 }
