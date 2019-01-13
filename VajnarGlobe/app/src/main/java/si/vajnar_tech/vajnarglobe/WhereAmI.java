@@ -169,6 +169,12 @@ public class WhereAmI extends GPS
     Vector time = new Vector(Math.abs(qqq.x / sume.x), Math.abs(qqq.y / sume.y));
     Log.i(TAG, String.format("do meje %d bos prisel cez ", i) + (time.x + time.y) / 1000 + " sekund");
   }
+
+  @Override
+  public boolean performClick()
+  {
+    return super.performClick();
+  }
 }
 
 @SuppressWarnings("SuspiciousNameCombination")
