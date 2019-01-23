@@ -10,7 +10,7 @@ public class C
 {
   static final         String                TAG           = "IZAA";
   private static final double                DEF_LONGITUDE = 13.82535063201905;  //x
-  private static final double                DEF_LATITUDE  = 46.486136939697225;  //y
+  private static final double                DEF_LATITUDE  = 46.486136939697225; //y
 
   // scale i power of 10
   static               int                   scale         = 6;
@@ -29,8 +29,6 @@ public class C
     // test parameters
     final int      min  = 5;
     final int      max  = 13;
-    final int      minT = 1;
-    final int      maxT = 3;
     WhereAmI       gps  = null;
     if (act.getCurrentFragment() instanceof F_Track) {
       F_Track f = (F_Track) act.getCurrentFragment();
@@ -49,7 +47,7 @@ public class C
         Location loc = new Location("");
 
         while (true) {
-          int    t    = r.nextInt(maxT - minT) + minT;
+          int    t    = Parameters.minTime;
           int    rx   = r.nextInt(max - min) + min;
           int    ry   = r.nextInt(max - min) + min;
           double offX = (double) rx / 1000000.0;
@@ -59,7 +57,7 @@ public class C
           loc.setLongitude(longitude);
           finalGps.onLocationChanged(loc);
           try {
-            Thread.sleep(t * 1000);
+            Thread.sleep(t);
           } catch (InterruptedException e) {
             e.printStackTrace();
             break;
@@ -78,8 +76,8 @@ public class C
     static final int           n       = 1;    // get ~ points to determine current position
     // 35 is this value if min Time and minDist are zero.
     static final AtomicInteger lim     = new AtomicInteger(1);
-    static final int           minTime = 100;    // ms
-    static final float         minDist = 0.5f; // m
-    static final int           ZZ      = 3;    // ~ points back from current
+    static final int           minTime = 5000;    // ms
+    static final float         minDist = 0f; // m
+    static final int           ZZ      = 2;    // ~ points back from current, cant be les than 2
   }
 }
