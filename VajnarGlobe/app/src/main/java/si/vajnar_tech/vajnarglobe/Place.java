@@ -36,6 +36,7 @@ public class Place extends Area
     }
     res.x += C.O.x;
     res.y += C.O.y;
+    res.y = C.size.y - res.y;
     return res;
   }
 

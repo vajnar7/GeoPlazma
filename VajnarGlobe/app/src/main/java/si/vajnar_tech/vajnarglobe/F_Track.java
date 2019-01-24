@@ -65,6 +65,7 @@ public class F_Track extends MyFragment implements View.OnClickListener, View.On
     case MotionEvent.ACTION_UP:
       Vector v = new Vector(event.getRawX(), event.getRawY());
       dK._up(v);
+      dK.y = -dK.y;
       C.O._plus_je(dK);
       view.invalidate();
     default:
