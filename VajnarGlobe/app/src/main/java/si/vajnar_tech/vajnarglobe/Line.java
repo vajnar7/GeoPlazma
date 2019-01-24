@@ -124,8 +124,8 @@ class Line
   {
     // render
     p.setColor(color);
-    Point o1 = a.transform(new Point(p1.x, p1.y), true);
-    Point o2 = a.transform(new Point(p2.x, p2.y), true);
+    Point o1 = a.transform(new Point(p1.x, p1.y), false);
+    Point o2 = a.transform(new Point(p2.x, p2.y), false);
     c.drawLine((float) o1.x, (float) o1.y, (float) o2.x, (float) o2.y, p);
   }
 

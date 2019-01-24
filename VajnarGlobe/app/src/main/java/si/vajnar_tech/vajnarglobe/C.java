@@ -8,9 +8,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class C
 {
+  public static Point O;
+
   static final         String                TAG           = "IZAA";
-  private static final double                DEF_LONGITUDE = 13.82535063201905;  //x
-  private static final double                DEF_LATITUDE  = 46.486136939697225; //y
+  private static final double                DEF_LONGITUDE = 13.826209;  //x
+  private static final double                DEF_LATITUDE  = 46.487243; //y
 
   // scale i power of 10
   static               int                   scale         = 6;
