@@ -8,7 +8,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class C
 {
-  public static Point O;
+  public static Vector O;
 
   static final         String                TAG           = "IZAA";
   private static final double                DEF_LONGITUDE = 13.826209;  //x

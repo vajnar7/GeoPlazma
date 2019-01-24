@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity
     setContentView(inflater.inflate(R.layout.content_main, null));
     Display display = getWindowManager().getDefaultDisplay();
     display.getSize(C.size);
-    C.O = new Point(0, 0);
+    C.O = new Vector(0, 0);
     setFragment("main", FragmentMain.class, new Bundle());
   }
 
