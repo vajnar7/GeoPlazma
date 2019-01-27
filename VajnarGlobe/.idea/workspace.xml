@@ -1,72 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AndroidLayouts">
+    <shared>
+      <config />
+    </shared>
+  </component>
   <component name="AndroidLogFilters">
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0ad14e7c-e66c-4039-90b3-dd40a279f910" name="Default" comment="Merge branch 'fragments'&#10;&#10;# Conflicts:&#10;#&#9;VajnarGlobe/.gradle/4.4/fileHashes/fileHashes.bin&#10;#&#9;VajnarGlobe/.gradle/4.4/fileHashes/fileHashes.lock&#10;#&#9;VajnarGlobe/.gradle/4.4/taskHistory/taskHistory.bin&#10;#&#9;VajnarGlobe/.gradle/4.4/taskHistory/taskHistory.lock&#10;#&#9;VajnarGlobe/.gradle/buildOutputCleanup/buildOutputCleanup.lock&#10;#&#9;VajnarGlobe/.idea/workspace.xml&#10;#&#9;VajnarGlobe/app/app.iml">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__android_arch_core_runtime_1_1_1_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__android_arch_lifecycle_livedata_1_1_1_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__android_arch_lifecycle_livedata_core_1_1_1_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__android_arch_lifecycle_runtime_1_1_1_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__android_arch_lifecycle_viewmodel_1_1_1_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_android_support_animated_vector_drawable_28_0_0_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_android_support_appcompat_v7_28_0_0_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_android_support_asynclayoutinflater_28_0_0_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_android_support_coordinatorlayout_28_0_0_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_android_support_cursoradapter_28_0_0_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_android_support_customview_28_0_0_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_android_support_documentfile_28_0_0_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_android_support_drawerlayout_28_0_0_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_android_support_interpolator_28_0_0_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_android_support_loader_28_0_0_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_android_support_localbroadcastmanager_28_0_0_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_android_support_print_28_0_0_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_android_support_slidingpanelayout_28_0_0_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_android_support_support_compat_28_0_0_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_android_support_support_core_ui_28_0_0_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_android_support_support_core_utils_28_0_0_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_android_support_support_fragment_28_0_0_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_android_support_support_vector_drawable_28_0_0_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_android_support_swiperefreshlayout_28_0_0_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_android_support_test_espresso_espresso_core_3_0_2_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_android_support_test_espresso_espresso_idling_resource_3_0_2_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_android_support_test_monitor_1_0_2_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_android_support_test_rules_1_0_2_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_android_support_test_runner_1_0_2_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_android_support_versionedparcelable_28_0_0_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_android_support_viewpager_28_0_0_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/si/vajnar_tech/vajnarglobe/F_Capture.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/si/vajnar_tech/vajnarglobe/F_Track.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/si/vajnar_tech/vajnarglobe/FragmentMain.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/si/vajnar_tech/vajnarglobe/MyFragment.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/ic_baseline_settings_20px.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/capture_layout.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/content_main.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/track_base.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../server/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../server/areas/management/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../server/areas/management/commands/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../server/areas/management/commands/readkml.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../server/areas1.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/cache.properties" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/cache.properties" afterDir="false" />
+    <list default="true" id="0ad14e7c-e66c-4039-90b3-dd40a279f910" name="Default" comment="Merge branch 'fragments'&#10;&#10;# Conflicts:&#10;#&#9;VajnarGlobe/.gradle/4.4/fileHashes/fileHashes.bin&#10;#&#9;VajnarGlobe/.gradle/4.4/fileHashes/fileHashes.lock&#10;#&#9;VajnarGlobe/.gradle/4.4/taskHistory/taskHistory.bin&#10;#&#9;VajnarGlobe/.gradle/4.4/taskHistory/taskHistory.lock&#10;#&#9;VajnarGlobe/.gradle/buildOutputCleanup/buildOutputCleanup.lock&#10;#&#9;VajnarGlobe/.idea/workspace.xml&#10;#&#9;VajnarGlobe/app/app.iml" />
+    <list id="5e43e4b0-95ea-4b43-8128-9c7bc5589996" name="misc" comment="">
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/si/vajnar_tech/vajnarglobe/Arduni.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/si/vajnar_tech/vajnarglobe/C.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/si/vajnar_tech/vajnarglobe/C.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/si/vajnar_tech/vajnarglobe/GPS.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/si/vajnar_tech/vajnarglobe/GPS.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/si/vajnar_tech/vajnarglobe/Line.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/si/vajnar_tech/vajnarglobe/Line.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/si/vajnar_tech/vajnarglobe/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/si/vajnar_tech/vajnarglobe/MainActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/si/vajnar_tech/vajnarglobe/Place.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/si/vajnar_tech/vajnarglobe/Place.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/si/vajnar_tech/vajnarglobe/Point.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/si/vajnar_tech/vajnarglobe/Point.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/si/vajnar_tech/vajnarglobe/WhereAmI.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/si/vajnar_tech/vajnarglobe/WhereAmI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/styles.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/styles.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -85,6 +32,20 @@
         <projects_view />
       </state>
     </system>
+  </component>
+  <component name="FUSProjectUsageTrigger">
+    <session id="1932068425">
+      <usages-collector id="statistics.file.extensions.edit">
+        <counts>
+          <entry key="txt" value="4" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.edit">
+        <counts>
+          <entry key="PLAIN_TEXT" value="4" />
+        </counts>
+      </usages-collector>
+    </session>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
@@ -1376,7 +1337,7 @@
   <component name="PropertiesComponent">
     <property name="android.sdk.path" value="D:/Android/sdk" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="settings.editor.selected.configurable" value="configurable.group.appearance" />
+    <property name="settings.editor.selected.configurable" value="configurable.group.editor" />
     <property name="sync.plugin.last.upgrade.timestamp" value="1548616664457" />
   </component>
   <component name="RunDashboard">
@@ -1568,6 +1529,14 @@
       <option name="presentableId" value="Default" />
       <updated>1539074410115</updated>
     </task>
+    <task id="LOCAL-00001" summary="Merge branch 'fragments'&#10;&#10;# Conflicts:&#10;#&#9;VajnarGlobe/.gradle/4.4/fileHashes/fileHashes.bin&#10;#&#9;VajnarGlobe/.gradle/4.4/fileHashes/fileHashes.lock&#10;#&#9;VajnarGlobe/.gradle/4.4/taskHistory/taskHistory.bin&#10;#&#9;VajnarGlobe/.gradle/4.4/taskHistory/taskHistory.lock&#10;#&#9;VajnarGlobe/.gradle/buildOutputCleanup/buildOutputCleanup.lock&#10;#&#9;VajnarGlobe/.idea/workspace.xml&#10;#&#9;VajnarGlobe/app/app.iml">
+      <created>1548618310955</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1548618310955</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="ToolWindowManager">
