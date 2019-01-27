@@ -64,9 +64,9 @@ public abstract class GPS extends View implements LocationListener
            }).create()).show();
       return;
     }
-
-    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, minTime, minDist, this);
-    Toast.makeText(ctx, "GPS granted", Toast.LENGTH_SHORT).show();
+//
+//    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, minTime, minDist, this);
+//    Toast.makeText(ctx, "GPS granted", Toast.LENGTH_SHORT).show();
   }
 
   @Override

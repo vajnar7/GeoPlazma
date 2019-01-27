@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 public class F_Track extends MyFragment implements View.OnClickListener, View.OnTouchListener
@@ -18,8 +19,8 @@ public class F_Track extends MyFragment implements View.OnClickListener, View.On
   {
     init();
 
-    View           res = inflater.inflate(R.layout.track_base, container, false);
-    RelativeLayout l1  = res.findViewById(R.id.kkk0_top);
+    View         res = inflater.inflate(R.layout.track_base, container, false);
+    LinearLayout l1  = res.findViewById(R.id.kkk0_top);
     gps.setOnTouchListener(this);
     l1.addView(gps);
 
