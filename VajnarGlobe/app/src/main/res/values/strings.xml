@@ -1,6 +1,9 @@
 <resources>
-    <string name="app_name">VajnarGlobe</string>
-    <string name="longitude">Longitude</string>
-    <string name="latitude">Latitude</string>
-    <string name="send">SEND</string>
+  <string name="app_name">VajnarGlobe</string>
+  <string name="longitude">Longitude</string>
+  <string name="latitude">Latitude</string>
+  <string name="send">SEND</string>
+  <string name="capture">capture</string>
+  <string name="track">track</string>
+  <string name="construct">Construct</string>
 </resources>

@@ -24,7 +24,7 @@ class Point
   {
     // render
     paint.setColor(color);
-    Point o1 = a.transform(new Point(x, y), true);
+    Point o1 = a.transform(new Point(x, y), false);
     canvas.drawCircle((float) o1.x, (float) o1.y, 4, paint);
   }
 
@@ -32,8 +32,14 @@ class Point
   {
     // render
     paint.setColor(color);
-    Point o1 = a.transform(new Point(x, y), true);
+    Point o1 = a.transform(new Point(x, y), false);
     canvas.drawCircle((float) o1.x, (float) o1.y, r, paint);
+  }
+
+  void is(Point a)
+  {
+    x = a.x;
+    y = a.y;
   }
 }
 

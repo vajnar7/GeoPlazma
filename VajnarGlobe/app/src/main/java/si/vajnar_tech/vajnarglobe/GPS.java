@@ -17,24 +17,17 @@ import android.widget.Toast;
 
 import static si.vajnar_tech.vajnarglobe.C.Parameters.minDist;
 import static si.vajnar_tech.vajnarglobe.C.Parameters.minTime;
+import static si.vajnar_tech.vajnarglobe.C.TAG;
 
 public abstract class GPS extends View implements LocationListener
 {
-  private static final String TAG              = "IZAA-GPS";
-  private static final double DEF_LONGITUDE    = 13.82535063201905;  //x
-  private static final double DEF_LATITUDE     = 46.486136939697225;  //y
-
-  protected double latitude;
-  protected double longitude;
   protected MainActivity ctx;
-  public boolean gotLocation = false;
+  protected Location location;
 
   GPS(MainActivity ctx)
   {
     super(ctx);
     this.ctx = ctx;
-    latitude = DEF_LATITUDE;
-    longitude = DEF_LONGITUDE;
     enableGPSService();
   }
 
@@ -45,11 +38,8 @@ public abstract class GPS extends View implements LocationListener
         Manifest.permission.ACCESS_COARSE_LOCATION
     };
     final int INITIAL_REQUEST = 1337;
-
     ctx.requestPermissions(INITIAL_PERMS, INITIAL_REQUEST);
-
     LocationManager locationManager = (LocationManager) ctx.getSystemService(Context.LOCATION_SERVICE);
-
     if (locationManager == null) {
       Log.i(TAG, "Cannot get the LocationManager");
       return;
@@ -74,18 +64,16 @@ public abstract class GPS extends View implements LocationListener
            }).create()).show();
       return;
     }
-
-    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, minTime, minDist, this);
-    Toast.makeText(ctx, "GPS granted", Toast.LENGTH_SHORT).show();
+//
+//    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, minTime, minDist, this);
+//    Toast.makeText(ctx, "GPS granted", Toast.LENGTH_SHORT).show();
   }
 
   @Override
   public void onLocationChanged(Location location)
   {
-    latitude = location.getLatitude();
-    longitude = location.getLongitude();
-    gotLocation = true;
-    notifyMe(new Vector(longitude, latitude));
+    this.location = new Location(location);
+    notifyMe(new Vector(location.getLongitude(), location.getLatitude()));
     notifyMe(location);
   }
 

@@ -10,6 +10,7 @@ import android.util.Log;
 import java.util.ArrayList;
 
 import static si.vajnar_tech.vajnarglobe.C.Parameters.ZZ;
+import static si.vajnar_tech.vajnarglobe.C.TAG;
 import static si.vajnar_tech.vajnarglobe.C.scale;
 import static si.vajnar_tech.vajnarglobe.C.xOffset;
 import static si.vajnar_tech.vajnarglobe.C.yOffset;
@@ -102,9 +103,10 @@ public class WhereAmI extends GPS
     if (!ready) {
       new GetAreas(new Runnable()
       {
-        @Override public void run()
+        @Override
+        public void run()
         {
-          act.gpsService.invalidate();
+          invalidate();
         }
       });
       ready = true;
@@ -165,7 +167,13 @@ public class WhereAmI extends GPS
     Vector qqq  = ttt._minus(ccc);
     Vector sume = fv.integral();
     Vector time = new Vector(Math.abs(qqq.x / sume.x), Math.abs(qqq.y / sume.y));
-    Log.i("IZAAA", String.format("do meje %d bos prisel cez ", i) + (time.x + time.y) / 1000 + " sekund");
+    Log.i(TAG, String.format("do meje %d bos prisel cez ", i) + (time.x + time.y) / 1000 + " sekund");
+  }
+
+  @Override
+  public boolean performClick()
+  {
+    return super.performClick();
   }
 }
 
