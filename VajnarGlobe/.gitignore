@@ -5,3 +5,9 @@
 vajnarlibrary/vajnarlibrary.iml
 .idea/vcs.xml
 vajnarlibrary/proguard-rules.pro
+.idea/VajnarGlobe.iml
+.idea/gradle.xml
+.idea/modules.xml
+.idea/workspace.xml
+.idea/caches/
+.idea/misc.xml
