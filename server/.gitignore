@@ -1,0 +1,11 @@
+.idea/dictionaries/
+.idea/inspectionProfiles/
+.idea/misc.xml
+.idea/modules.xml
+.idea/server.iml
+.idea/workspace.xml
+areas/migrations/
+areas/management/__pycache__/
+areas/management/commands/__pycache__/
+bacek.json
+vrt.json
