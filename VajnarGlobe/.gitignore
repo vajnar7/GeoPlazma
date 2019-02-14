@@ -2,3 +2,6 @@
 .gradle/4.10.1/
 .gradle/vcs-1/
 .gradle/vcsWorkingDirs/
+vajnarlibrary/vajnarlibrary.iml
+.idea/vcs.xml
+vajnarlibrary/proguard-rules.pro
